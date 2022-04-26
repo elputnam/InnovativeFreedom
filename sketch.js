@@ -7,8 +7,7 @@ function setup() {
   mgr = new SceneManager();
 
   //Preload scenes
-  mgr.addScene ( DelicateFigure );
-  //mgr.addScene ( Animation2 );
+  mgr.addScene ( ViralTime );
   //mgr.addScene ( Animation3 );
 
   mgr.showNextScene();
@@ -18,90 +17,88 @@ function draw() {
   mgr.draw();
 }
 
+function keyPressed(){
+    // You can optionaly handle the key press at global level...
+    switch(key)
+    {
+        case '1':
+            mgr.showScene( ViralTime );
+            break;
+        // case '2':
+        //     mgr.showScene( ViralTime );
+        //     break;
+        // case '3':
+        //     mgr.showScene( Animation3 );
+        //     break;
+    }
+  }
 //========================================================================
 //=========================Scenes=========================================
 //========================================================================
 
-//==================Delicate Figure=======================================
 
-function DelicateFigure(){
-  let xspacing = 10; // How far apart should each horizontal position be spaced
-  let w; // Width of entire wave
-  let maxwaves = 12; // total # of waves to add together
+//==================Viral Time=======================================
 
-  let theta = 0.0;
-  let amplitude = []; // Height of wave
-  let dx = []; // Value for incrementing X, to be calculated as a function of period and xspacing
-  let yvalues; // Using an array to store height values for the wave (not entirely necessary)
+function ViralTime(){
+  let phrase = ['Time' ,'is' , 'glitchy'];
+  let i;
+  let link;
+  let start; 
+  let link1;
+  let link2;
+  let link3;
 
-  this.setup = function(){
-    createCanvas(windowWidth, windowHeight, WEBGL);
-    background(0, 100,10);
-    frameRate(20)
-    
-    w = width + 16;
-  
-    for (let i = 0; i < maxwaves; i++) {
-      amplitude[i] = random(10, 30);
-      let period = random(100, 300); // How many pixels before the wave repeats
-      dx[i] = (TWO_PI / period) * xspacing;
+this.setup = function() {
+  createCanvas(windowWidth, windowHeight);
+  frameRate(20);
+  frameCount = 0;
+  //frameRate(10);
+  i = 0;
+  j = 0;
+}
+
+this.draw = function() {
+      
+  background(random(30), 10);
+  if (frameCount < 100){
+    this.viralTime();
     }
-  
-    yvalues = [];
-
+  if (frameCount > 100){
+      this.timeisGlitchy();
+    }
   }
 
-  this.draw = function(){
-    background(0, 100, random(10));
-    push();
-    translate(-width/2, -height/2)
-    this.calcWave();
-    this.renderWave();
-    pop();
-    
-    // scale(map(mouseX, 0, width, 10, 3))
-    scale(3);
-    rotateX(millis()/ 1000);
-    rotateY(millis() / 2000);
-    rotateZ(millis()/ 1500)
-    fill(0, random(100), random(100), 50);
-    strokeWeight(random(5));
-    stroke(175, random(100), random(100));
-    sphere(width*.05, 1, int(random(2, 4)));
-    push();
-    rotateY(180);
-    sphere(width*.05, 1, int(random(2, 4)));
-    pop();
-  }
-
-  this.calcWave = function() {
-    // Increment theta (try different values for 'angular velocity' here
-    theta += random(0.01,0.05);
+  this.viralTime = function() {
+    if (frameCount%6==0){
+      let num = 20;
+      push();
+      translate(width / 2, height / 2);
+      let cir = (360 / num) * (frameCount % num);
+      rotate(radians(random(cir)));
+      noStroke();
+      fill(random(150, 300), random(360), random(360), 50);
+      circle(width*.1, 0, width*.07);
+      pop();
   
-    // Set all height values to zero
-    for (let i = 0; i < w / xspacing; i++) {
-      yvalues[i] = 0;
-    }
-  
-    // Accumulate wave height values
-    for (let j = 0; j < maxwaves; j++) {
-      let x = theta;
-      for (let i = 0; i < yvalues.length; i++) {
-        // Every other wave is cosine instead of sine
-        if (j % 2 === 0) yvalues[i] += sin(x) * amplitude[j];
-        else yvalues[i] += tan(x) * amplitude[j];
-        x += dx[j];
+    //wobbly lines
+    stroke(random(0, 100), 100, 360);
+    line(random(100), 0, random(100), height);
+    line(width - random(200), 0, width - random(200), height);
+    line(0, random(200), width, random(200));
+    line(0, height - random(200), width, height - random(200));
       }
-    }
   }
-  
-  this.renderWave = function() {
-    // A simple way to draw the wave with an ellipse at each position
-    noStroke();
-    fill(random(340, 360), random(100), random(100), random(100));
-    ellipseMode(CENTER);
-    for (let x = 0; x < yvalues.length; x++) {
-     circle(x * xspacing, height / 2 + yvalues[x], random(10));
+
+  this.timeisGlitchy = function(){
+    background(random(360), 100, 100, 5);
+    textSize(random(10, 100))
+    noStroke()
+    fill(random(255))
+    textFont('VT323');
+    text(phrase[i], random(width), random(height));
+    i += 1;
+    if (i >= 3){
+      i = 0;
     }
   }
 }

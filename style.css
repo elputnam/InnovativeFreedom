@@ -3,6 +3,10 @@ html, body {
   padding: 0;
 }
 
+* {
+  font-family: 'VT323', sans-serif;
+}
+
 canvas {
   display: block;
 }
