@@ -1,21 +1,57 @@
 let mgr;
+
+//heartrate data list
 let list1 = [];
+
+//Lists of Months
+let lightList = []; //lightly active minutes
+let moderateList = []; //moderately active minutes
+let veryList = []; //very active minutes
+let sedentaryList = []; //sedentary minutes
+
+//image arrays 
+let sedImages = [];
+let lowImages = [];
+let midImages = [];
+let highImages = []
 
 function preload(){
   //Load list of json file names heartrate
   list1 = loadStrings('heartList.txt');
   // heartRate = loadJSON('data/heart_rate-2020-05-01.json')
+
+  //Load list of json file names activity minutes
+  lightList = loadStrings('lightlyActive-dataList.txt');
+  moderateList = loadStrings('moderatelyActive-dataList.txt');
+  veryList = loadStrings('veryActive-dataList.txt');
+  sedentaryList = loadStrings('sedentary-dataList.txt');
+  
+  // images
+  for (let i = 1; i < 16; i++){
+    sedImages[i] = loadImage("data/images/sedentary-" + i + ".png");
+  } 
+  for (let j = 1; j < 7; j++){
+    lowImages[j] = loadImage("data/images/low-" + j + ".png");
+  }  
+  for (let k = 1; k < 8; k++){
+    midImages[k] = loadImage("data/images/mid-" + k + ".png");
+  }
+  for (let l = 1; l < 19; l++){
+    highImages[l] = loadImage("data/images/high-" + l + ".png");
+  }    
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   colorMode(HSB, 360, 100, 100, 100);
-
+  reset();
   mgr = new SceneManager();
 
   //Preload scenes
   mgr.addScene ( ViralTime );
   mgr.addScene ( BrashPhone );
+  mgr.addScene ( GlibDrive );
+  mgr.addScene ( FerociousPatience );
 
   mgr.showNextScene();
 }
@@ -38,11 +74,31 @@ function keyPressed(){
         case '3':
             mgr.showScene( GlibDrive );
             break;
+        case '4':
+            mgr.showScene( FerociousPatience );
     }
   }
 function reset(){
   frameCount = 0;
   }
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  }
+
+function changeScene(){
+  let chance = floor(random(1,5));
+  
+  if (chance == 1){
+  mgr.showScene(BrashPhone);
+  } else if (chance == 2){
+    mgr.showScene( GlibDrive );
+  } else if (chance == 3) {
+    mgr.showScene( FerociousPatience );
+  } else if (chance == 4) {
+    mgr.showScene( ViralTime );
+  }
+}
 
 //========================================================================
 //=========================Scenes=========================================
@@ -54,14 +110,10 @@ function reset(){
 function ViralTime(){
   let phrase = ['Time' ,'is' , 'glitchy'];
   let i;
-  let link;
-  let start; 
-  let link1;
-  let link2;
-  let link3;
 
 this.setup = function() {
-  //createCanvas(windowWidth, windowHeight);
+  reset();
+  createCanvas(windowWidth, windowHeight);
   frameRate(20);
   frameCount = 0;
   //frameRate(10);
@@ -71,14 +123,18 @@ this.setup = function() {
 
 this.draw = function() {    
   background(random(30), 10);
-  if (frameCount < 100){
+  if (frameCount < 250){
     this.viralTime();
     }
-  if (frameCount > 100){
+  if (frameCount > 250){
       this.timeisGlitchy();
     }
   
-    if (frameCount == 200){
+    if (frameCount == 500){
+      changeScene();
+    }
+
+    if (frameCount == 501){
       reset();
     }
   }
@@ -135,11 +191,12 @@ function BrashPhone(){
  
 
   this.setup = function(){
+    reset();
+    createCanvas(windowWidth, windowHeight);
     frameRate(25);
     num = height*0.3;
     for (let i = 0; i < num; i++) {
     swarm.push(new Screen());
-    reset();
   }
 
     //select day 
@@ -180,6 +237,10 @@ function BrashPhone(){
         }
       }
      }
+     if (frameCount == 500){
+      changeScene();
+      // reset();
+    }
     }
 
     this.throbber = function(){
@@ -292,6 +353,135 @@ function BrashPhone(){
 
 //==================Ferocious Patience====================================
 
+function FerociousPatience(){
+    let back = 175;
+
+    // Daily Cycle - variables for selceting and cycling throguh days
+    let lightActive = [];
+    let  moderateActive = [];
+    let veryActive = []; 
+    let notActive = [];
+    let light_data, very_data, moderate_data, sedentary_data;
+    let num_days; // number of days of data
+    let day_num = 0;
+
+    let light, very, moderate, sedentary;
+
+    this.setup = function(){
+      // if (windowWidth > windowHeight){
+      //   createCanvas(windowHeight, windowHeight);
+      // } else {
+      //   createCanvas(windowWidth, windowWidth);
+      // }
+      reset();
+      background(0, 100, 10);
+      frameRate(15);
+
+
+    //select month
+    let month = int(random(18));
+    print(month);
+    lightActive = loadJSON(lightList[month]);
+    moderateActive = loadJSON(moderateList[month]);
+    veryActive = loadJSON(veryList[month]);
+    notActive = loadJSON(sedentaryList[month]);
+    }
+
+    this.draw = function(){
+    if (frameCount < 100){
+      background(random(360), 100, 10, 10)
+      }
+
+    if (frameCount==100){
+      num_days = Object.keys(lightActive).length;
+      background(0);
+      textSize(50);
+      fill(255);
+      text('lightly active', width*.05, height*.2);
+      text('very active', width*.55, height*.3);
+      text('moderately active', width*.05, height*.6, 0, height*.8);
+      text('sedentary', width*.55, height*.8);
+      // print(num_days);
+      // num_steps = Object.keys(stepCount).length;
+    }
+
+    if (frameCount==150){
+      background(0);
+    } 
+
+    if (frameCount > 150){
+      light = lightActive[day_num]['value'];
+      very = veryActive[day_num]['value'];
+      moderate = moderateActive[day_num]['value'];
+      sedentary = notActive[day_num]['value'];
+      back = map(very, 0, 50, 175, 0);
+      day_num += 1;
+      this.activityMapping();
+
+      if (day_num >= num_days){
+        day_num = 0;
+        }
+      }
+      if (frameCount == 500){
+        changeScene();
+        reset();
+      }
+    }
+
+    this.activityMapping = function(){
+        noStroke();
+        //let s = random(100);
+        //let l = random(100);
+        let s = 100;
+        let l = 100;
+          // lightly active
+          let a = map(light, 0, 1200, 175, 360);
+          let alp1 = map(light, 0, 1500, 0, 100);
+          let w1 = map(light, 0, 400, 0, width);
+          let numA = int(random(1, 6));
+          let lightImage = int(map(light, 0, 1500, 1, 6)); 
+          // fill(a, s, l, w1);
+          // rect(0 + w1, 0, width/2, height/2);
+          tint(a, alp1, l, alp1);
+          image(lowImages[lightImage], 0, 0, width/2, height/2)
+      
+          // very active
+          let b = map(very, 0, 1200, 175, 360);
+          let w2 = map(very, 0, 1500, 0, width);
+          let numB = int(random(1, 18));
+          let alp2 = map(very, 0, 1500, 0, 100);
+          let veryImage = int(map(very, 0, 200, 1, 18)) 
+          // fill(b, s, l, w2);
+          tint(b, alp2, l, alp2)
+          // rect(width/2-w2, 0, width/2, height/2);
+          image(highImages[veryImage], width/2, 0, width/2, height/2)
+          
+          
+          // sedentary
+          let d = map(sedentary, 0, 1200, 175, 360);
+          let w4 = map(sedentary, 0, 1500, 0, width);
+          let alp4 = map(sedentary, 0, 1500, 0, 100);
+          let numD = int(random(1, 15))
+          let sedenImage = int(map(sedentary, 0, 1500, 1, 15)) 
+          // fill(d, s, l, w4);
+          tint(d, alp4, l, alp4);
+          // rect(width/2-w4, height*.5, width/2, height/2);
+          image(sedImages[sedenImage], width/2, height*.5, width/2, height/2);
+      
+            // moderately active
+          let c = map(moderate, 0, 1200, 175, 360);
+          let w3 = map(moderate, 0, 1500, 0, width);
+          let alp3 = map(moderate, 0, 1500, 0, 100);
+          let numC = int(random(1, 7));
+          let modImage = int(map(moderate, 0, 200, 1, 7)) 
+          // fill(c, s, l, w3);
+          tint(c, alp3, l, alp3);
+          // rect(0+w3, height*.5, width/2, height/2);
+          image(midImages[modImage], 0, height*.5, width/2, height/2);    
+    }
+  }
+
+
 //==================Glib Drive============================================
 
 function GlibDrive(){
@@ -307,6 +497,7 @@ function GlibDrive(){
 
 
 this.setup = function() {
+  createCanvas(windowWidth, windowHeight);
   reset();
   frameRate(15);
   num = height*.3;
@@ -359,6 +550,9 @@ this.draw = function() {
     swarm[i].oscillate();
     swarm[i].display();
     }
+  if (frameCount == 500){
+    changeScene();
+  }
 }
 
 this.overlay = function(){
@@ -409,5 +603,3 @@ class Element{
     }
   }
 }
-
-
