@@ -5,6 +5,6 @@ Selection of animations for Emergent using p5.scenemanager library (in process)
 Includes:
 
 - Viral Time
-- Brash phone
+- Brash phone (with Noise)
 - glib drive
-- Ferocious patience
+- Ferocious patience (with Uncertain Foal)
