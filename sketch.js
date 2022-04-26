@@ -408,10 +408,10 @@ function FerociousPatience(){
       background(0);
       textSize(50);
       fill(255);
-      text('lightly active', width*.05, height*.2);
-      text('very active', width*.55, height*.3);
-      text('moderately active', width*.05, height*.6, 0, height*.8);
-      text('sedentary', width*.55, height*.8);
+      text('lightly active', width*.05, height*0.2);
+      text('very active', width*.55, height*0.3);
+      text('moderately active', width*.05, height*0.6);
+      text('sedentary', width*.55, height*0.8);
       // print(num_days);
       // num_steps = Object.keys(stepCount).length;
     }
