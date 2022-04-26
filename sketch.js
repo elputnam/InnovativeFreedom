@@ -1,3 +1,4 @@
+//p5.scenemanager variable
 let mgr;
 
 //heartrate data list
@@ -26,7 +27,7 @@ function preload(){
   veryList = loadStrings('veryActive-dataList.txt');
   sedentaryList = loadStrings('sedentary-dataList.txt');
   
-  // images
+  // images for Ferocious Patience
   for (let i = 1; i < 16; i++){
     sedImages[i] = loadImage("data/images/sedentary-" + i + ".png");
   } 
@@ -208,8 +209,8 @@ function BrashPhone(){
 
   this.draw = function(){
     background(320, 50, 100, 10);
-    if (frameCount <= 200){
-      this.throbber();
+    if (frameCount < 200){
+      this.noise();
     }
 
     if (frameCount >= 200){
@@ -244,17 +245,14 @@ function BrashPhone(){
     }
     }
 
-    this.throbber = function(){
-      if (frameCount%6==0){
-        let num = 20;
-        push();
-        translate(width / 2, height / 2);
-        let cir = (360 / num) * (frameCount % num);
-        rotate(radians(random(cir)));
-        noStroke();
-        fill(random(50,150), random(100), random(100));
-        circle(width*.1, 0, width*.07);
-        pop();
+    this.noise = function(){
+      // noStroke();
+      noFill()
+      strokeWeight(random(5));
+      stroke(random(175,360), random(100), random(100));
+      for (let l = 0; l < 500; l++){
+        // for (let j = 0; j < 10; j++)
+        circle(random(width), random(height), random(100));
       }
     }
 
