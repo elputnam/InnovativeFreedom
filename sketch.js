@@ -87,6 +87,7 @@ function windowResized() {
   }
 
 function changeScene(){
+  reset();
   let chance = floor(random(1,5));
   
   if (chance == 1){
@@ -354,7 +355,13 @@ function BrashPhone(){
 //==================Ferocious Patience====================================
 
 function FerociousPatience(){
-    let back = 175;
+    let back;
+
+    //uncerain foal variables
+    var tileCount;
+    var locx;
+    var locy;
+    let a = 0;
 
     // Daily Cycle - variables for selceting and cycling throguh days
     let lightActive = [];
@@ -377,19 +384,25 @@ function FerociousPatience(){
       background(0, 100, 10);
       frameRate(15);
 
+      //Uncertain Foal Setup
+      tileCount = height*0.07
+      locx = width/2;
+      locy = height/2;
 
-    //select month
-    let month = int(random(18));
-    print(month);
-    lightActive = loadJSON(lightList[month]);
-    moderateActive = loadJSON(moderateList[month]);
-    veryActive = loadJSON(veryList[month]);
-    notActive = loadJSON(sedentaryList[month]);
+      //select month
+      let month = int(random(18));
+      print(month);
+      lightActive = loadJSON(lightList[month]);
+      moderateActive = loadJSON(moderateList[month]);
+      veryActive = loadJSON(veryList[month]);
+      notActive = loadJSON(sedentaryList[month]);
     }
 
     this.draw = function(){
     if (frameCount < 100){
-      background(random(360), 100, 10, 10)
+      // background(random(360), 100, 10, 10);
+      background(0);
+      this.uncertainFoal();
       }
 
     if (frameCount==100){
@@ -427,6 +440,26 @@ function FerociousPatience(){
         reset();
       }
     }
+
+    this.uncertainFoal = function(){
+        for (let gridY = 0; gridY < tileCount; gridY++) {
+          for (let gridX = 0; gridX < tileCount; gridX++) {
+            let posX = (width / tileCount) * gridX;
+            let posY = (height / tileCount) * gridY;
+            noStroke();
+            //ellipse(posX, posY, width/tileCount, height/tileCount);
+            ellipse(posX, posY, height/tileCount);
+
+            var toggle = floor(random(1, 150));
+            if (toggle == 10){
+               fill(random(10), 100, 100, 100);
+          } else {
+            fill(random(10), 100, 100, random(30));
+            }
+          
+            }
+          }
+        }
 
     this.activityMapping = function(){
         noStroke();
@@ -550,6 +583,7 @@ this.draw = function() {
     swarm[i].oscillate();
     swarm[i].display();
     }
+
   if (frameCount == 500){
     changeScene();
   }
