@@ -1,6 +1,6 @@
 # Innovative Freedom
 
-Selection of animations for Emergent using p5.scenemanager library (in process)
+Selection of animations using biometric data for Emergent using p5.scenemanager library (in process)
 
 Includes:
 
