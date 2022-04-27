@@ -63,12 +63,13 @@ function draw() {
   mgr.draw();
 }
 
+//resets framecount
 function reset(){
   frameCount = 0;
   }
 
+//change between scenes with keyboard
 function keyPressed(){
-    // You can optionaly handle the key press at global level...
     switch(key)
     {
         case '1':
@@ -94,10 +95,12 @@ function keyPressed(){
     }
   }
 
+//resize canvas when window is resized
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   }
 
+//changes between scenes automatically and randomly
 function changeScene(){
   reset();
   let chance = floor(random(1,6));
