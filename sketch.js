@@ -149,13 +149,9 @@ this.draw = function() {
       this.timeisGlitchy();
     }
   
-    if (frameCount == 500){
-      changeScene();
-    }
-
-    if (frameCount == 501){
-      reset();
-    }
+  if (frameCount == 500){
+    changeScene();
+  }
   }
 
   this.viralTime = function() {
