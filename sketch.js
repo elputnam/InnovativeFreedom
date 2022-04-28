@@ -1,3 +1,7 @@
+//Innovative Freedom, part of Emergent
+//Randomly cycles through Viral Time, Brashphone, Glib Drive, and Ferocious Patience
+//uses webcam
+
 //p5.scenemanager variable
 let mgr;
 
