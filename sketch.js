@@ -57,6 +57,7 @@ function setup() {
   mgr.addScene ( BrashPhone );
   mgr.addScene ( GlibDrive );
   mgr.addScene ( FerociousPatience );
+  mgr.addScene ( Tether );
 
   mgr.showNextScene();
 }
@@ -66,34 +67,47 @@ function draw() {
   mgr.draw();
 }
 
-function keyPressed(){
-    // You can optionaly handle the key press at global level...
-    switch(key)
-    {
-        case '1':
-            mgr.showScene( ViralTime );
-            break;
-        case '2':
-            mgr.showScene( BrashPhone );
-            break;
-        case '3':
-            mgr.showScene( GlibDrive );
-            break;
-        case '4':
-            mgr.showScene( FerociousPatience );
-    }
-  }
+//resets framecount
 function reset(){
   frameCount = 0;
   }
 
+//change between scenes with keyboard
+function keyPressed(){
+    switch(key)
+    {
+        case '1':
+          reset();
+          mgr.showScene( ViralTime );
+          break;
+        case '2':
+          reset();
+          mgr.showScene( BrashPhone );
+          break;
+        case '3':
+          reset();
+          mgr.showScene( GlibDrive );
+          break;
+        case '4':
+          reset();
+          mgr.showScene( FerociousPatience );
+          break;
+        case '5':
+          reset();
+          mgr.showScene( Tether );
+          break;
+    }
+  }
+
+//resize canvas when window is resized
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   }
 
+//changes between scenes automatically and randomly
 function changeScene(){
   reset();
-  let chance = floor(random(1,5));
+  let chance = floor(random(1,6));
   
   if (chance == 1){
   mgr.showScene(BrashPhone);
@@ -103,6 +117,8 @@ function changeScene(){
     mgr.showScene( FerociousPatience );
   } else if (chance == 4) {
     mgr.showScene( ViralTime );
+  } else if (chance == 5){
+    mgr.showScene( Tether );
   }
 }
 
@@ -129,6 +145,7 @@ this.setup = function() {
 
 this.draw = function() {    
   background(random(30), 10);
+  strokeWeight(1);
   if (frameCount < 250){
     this.viralTime();
     }
@@ -136,13 +153,9 @@ this.draw = function() {
       this.timeisGlitchy();
     }
   
-    if (frameCount == 500){
-      changeScene();
-    }
-
-    if (frameCount == 501){
-      reset();
-    }
+  if (frameCount == 500){
+    changeScene();
+  }
   }
 
   this.viralTime = function() {
@@ -637,5 +650,99 @@ class Element{
     let y = sin(this.angle.y) * this.amp.y;
     ellipse(mouseX + x, mouseY + y, random(10));
     }
+  }
+}
+
+//==================Tether================================================
+
+function Tether(){
+  let dance = [];
+  let num;
+
+  this.setup = function() {
+    reset();
+    createCanvas(windowWidth, windowHeight);
+    frameRate(15);
+    background(random(30));
+    num = height*0.05;
+    j = 0;
+    
+    for (i = 0; i < num; i++){
+      dance.push(new Element());
+    }
+  }
+  
+  this.draw = function() {
+    background(random(30), 10);
+    strokeWeight(1);
+    print(frameCount);
+    
+    for (i = 0; i < dance.length; i++){
+      dance[i].display();
+      dance[i].update();
+      dance[i].edges();
+      }
+    
+    this.scribble();
+    if (frameCount == 500){
+      changeScene();
+    }  
+  }
+
+  this.scribble = function(){
+    noFill();
+    for (i = 0; i < num; i++){
+      stroke(random(300,360), random(0,100), 100);
+      curveTightness(random(3,6));
+      curve(random(width), random(height), mouseX, mouseY, mouseX, mouseY,random(width), random(height));
+      }
+  }
+
+  class Element{
+    constructor(){
+      this.loc = createVector(random(width), random(height));
+      this.vel = createVector(0,0);
+      this.len = random(10,30);
+      //this.len = random(width*0.03, width*0.07);
+      this.ts = 3;
+      this.a = 0;
+    }
+    
+    display(){
+      fill(random(200,300), random(360), random(360));
+      //tethers
+      stroke(random(0,100), random(0,100), 100, 50);
+      line(this.loc.x, this.loc.y, mouseX, mouseY);
+      //bodies
+      stroke(0);
+      rectMode(CENTER);
+      circle(this.loc.x, this.loc.y, this.len);
+    }
+    
+    update(){
+      this.a = p5.Vector.random2D();
+      //this.a.mult(random(4));
+      this.a.mult(this.len*.3)
+      //this.a = createVector(random(-.1, .1), random(-.1, .1));
+      this.vel.add(this.a);
+      this.vel.limit(this.ts);
+      this.loc.add(this.vel);
+    }
+    
+    edges(){
+      if (this.loc.x > width) {
+        this.loc.x = 0;
+      }
+      if (this.loc.x < 0) {
+        this.loc.x = width;
+      }
+      if (this.loc.y > height) {
+        this.loc.y = 0;
+      }
+      if (this.loc.y < 0) {
+        this.loc.y = height;
+      }
+    }
+    
   }
 }
