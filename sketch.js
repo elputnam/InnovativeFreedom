@@ -58,6 +58,7 @@ function setup() {
   mgr.addScene ( GlibDrive );
   mgr.addScene ( FerociousPatience );
   mgr.addScene ( Tether );
+  mgr.addScene ( HeartGrid );
 
   mgr.showNextScene();
 }
@@ -96,6 +97,10 @@ function keyPressed(){
           reset();
           mgr.showScene( Tether );
           break;
+        case '6':
+          reset();
+          mgr.showScene( HeartGrid );
+          break;
     }
   }
 
@@ -107,7 +112,7 @@ function windowResized() {
 //changes between scenes automatically and randomly
 function changeScene(){
   reset();
-  let chance = floor(random(1,6));
+  let chance = floor(random(1,7));
   
   if (chance == 1){
   mgr.showScene(BrashPhone);
@@ -119,6 +124,8 @@ function changeScene(){
     mgr.showScene( ViralTime );
   } else if (chance == 5){
     mgr.showScene( Tether );
+  } else if (chance == 6){
+    mgr.showScene(HeartGrid);
   }
 }
 
@@ -744,5 +751,134 @@ function Tether(){
       }
     }
     
+  }
+}
+
+//==================Heart Grid============================================
+
+function HeartGrid(){
+  let x1 = 0;
+  let y1 = 0; 
+  let heartRate = [];
+  let heart;
+  let B = 0;
+  let c = 0;
+  let cr = 0; 
+  let s = 0;
+  let b;
+
+  //pixel grid variable
+  let tileCount;
+  
+  this.setup = function() {
+    createCanvas(windowWidth, windowHeight);
+    colorMode(HSB, 360, 100, 100, 100);
+    background(170, 50, 100);
+    let day = int(random(1,131));
+    heartRate = loadJSON(list1[day]);
+    x1 = width/2;
+    y1 = height/2;
+    frameRate(25);
+  }
+  
+  this.draw = function() {
+    
+    if (frameCount <= 100){
+      // background(170, 50, 100);
+      fill(random(255), random(100));
+      noStroke();
+      circle(random(width), random(height), random(100, 200))
+    }
+    
+    if (frameCount >= 100){
+    //read heartRate data
+    let bpm = heartRate[B].value['bpm'];
+    let b = map(bpm,60,170,10,255)
+    let sw = map(bpm,60,170,3,5)
+    B += 1;
+  
+    //squares
+    choice = int(random(1, 4.5));
+    let x2 = x1 + 50;
+    let y2 = y1 + 50;
+    let a = 5;
+    strokeWeight(sw);
+    stroke(s, random(360), random(360), b);
+    line(x1-random(-a,a), y1-random(-a,a),
+           x2+random(-a,a), y1-random(-a,a));
+      line(x2+random(-a,a), y1-random(-a,a),
+           x2+random(-a,a), y2+random(-a,a));
+      line(x2+random(-a,a), y2+random(-a,a),
+           x1+random(-a,a), y2+random(-a,a));
+      line(x1+random(-a,a), y2+random(-a,a),
+           x1+random(-a,a), y1+random(-a,a));
+  
+    //square movement
+    if (choice == 1){
+      x1 += 25;
+    } 
+    if (choice == 2){
+      x1 -= 25;
+    }
+    if (choice == 3){
+      y1 += 25;
+    }
+    if (choice == 4){
+      y1-=25;
+    }
+  
+    //reset
+    if (x1 < 0){
+      x1 = random(width);
+    }
+    if (y1 < 0){
+      y1 =random(height);
+    }
+    if (x2 > width){
+      x1 = random(width);
+    }
+    if (y2 > height){
+      y1 =random(height);
+    }
+    
+    
+    //color change
+    s += 1;
+      if (s == 360){
+          s = 0
+      }
+    }
+
+    if (frameCount == 500){
+    changeScene();
+    }
+  }
+
+this.grid = function() {
+  for (let gridY = 0; gridY < tileCount; gridY++) {
+    for (let gridX = 0; gridX < tileCount; gridX++) {
+      let posX = (width / tileCount) * gridX;
+      let posY = (height / tileCount) * gridY;
+
+      //introduce random choice between three
+      let toggle = floor(random(1, 3));
+
+      if (toggle == 1) {
+        stroke(random(180, 360), random(100), random(100));
+      
+        line(posX, posY, posX + width/tileCount, posY + height
+        );
+      }
+      
+      if (toggle == 2) {
+        fill(random(180), random(100), random(100));
+        square(
+          random(posX, posX + width / tileCount),
+          random(posY, posY + height / tileCount),
+          random(tileCount)
+          );
+        }
+      }
+    }
   }
 }
