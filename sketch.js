@@ -8,6 +8,17 @@ let mgr;
 //heartrate data list
 let list1 = [];
 
+//Andorid Dream variables
+let list2 = []; //list of months
+let dreamText = []; //poem
+var awakeFace;
+var lightFace;
+var deepFace;
+var remFace;
+
+//Indeterminate System Variables
+var photos = [];
+
 //Lists of Months
 let lightList = []; //lightly active minutes
 let moderateList = []; //moderately active minutes
@@ -21,6 +32,7 @@ let midImages = [];
 let highImages = []
 
 function preload(){
+  
   //Load list of json file names heartrate
   list1 = loadStrings('heartList.txt');
   // heartRate = loadJSON('data/heart_rate-2020-05-01.json')
@@ -44,6 +56,18 @@ function preload(){
   for (let l = 1; l < 19; l++){
     highImages[l] = loadImage("data/images/high-" + l + ".png");
   }    
+  //Load list of json file names sleep
+  list2 = loadStrings('dataList.txt');
+  //Load poem text
+  dreamText = loadStrings('disruptedDreams.txt');
+  //load images
+  awakeFace = loadImage("images/AndroidDream-4.jpg");
+  lightFace = loadImage("images/AndroidDream-3.jpg");
+  deepFace = loadImage("images/AndroidDream-1.jpg");
+  remFace = loadImage("images/AndroidDream-2.jpg");
+  for (let i = 1; i < 91; i++){
+    photos[i] = loadImage("images/maternalDance-" + i + ".png");
+  }
 }
 
 function setup() {
@@ -59,6 +83,8 @@ function setup() {
   mgr.addScene ( FerociousPatience );
   mgr.addScene ( Tether );
   mgr.addScene ( HeartGrid );
+  mgr.addScene ( AndroidDream );
+  mgr.addScene ( IndeterminateSystem );
 
   mgr.showNextScene();
 }
@@ -101,6 +127,14 @@ function keyPressed(){
           reset();
           mgr.showScene( HeartGrid );
           break;
+        case '7':
+          reset();
+          mgr.showScene( AndroidDream );
+          break;
+        case '8':
+          reset();
+          mgr.showScene( IndeterminateSystem );
+          break;
     }
   }
 
@@ -112,7 +146,7 @@ function windowResized() {
 //changes between scenes automatically and randomly
 function changeScene(){
   reset();
-  let chance = floor(random(1,7));
+  let chance = floor(random(1,9));
   
   if (chance == 1){
   mgr.showScene(BrashPhone);
@@ -126,6 +160,10 @@ function changeScene(){
     mgr.showScene( Tether );
   } else if (chance == 6){
     mgr.showScene(HeartGrid);
+  } else if (chance == 7){
+    mgr.showScene(AndroidDream);
+  } else if (chance == 8){
+    mgr.showScene(IndeterminateSystem);
   }
 }
 
@@ -143,7 +181,7 @@ function ViralTime(){
 this.setup = function() {
   reset();
   createCanvas(windowWidth, windowHeight);
-  frameRate(20);
+  // frameRate(20);
   frameCount = 0;
   //frameRate(10);
   i = 0;
@@ -554,7 +592,7 @@ function GlibDrive(){
 this.setup = function() {
   createCanvas(windowWidth, windowHeight);
   reset();
-  frameRate(15);
+  // frameRate(15);
   num = height*.3;
   j = 0;
   //console.log(list1);
@@ -669,7 +707,7 @@ function Tether(){
   this.setup = function() {
     reset();
     createCanvas(windowWidth, windowHeight);
-    frameRate(15);
+    // frameRate(15);
     background(random(30));
     num = height*0.05;
     j = 0;
@@ -754,6 +792,7 @@ function Tether(){
   }
 }
 
+
 //==================Heart Grid============================================
 
 function HeartGrid(){
@@ -778,7 +817,7 @@ function HeartGrid(){
     heartRate = loadJSON(list1[day]);
     x1 = width/2;
     y1 = height/2;
-    frameRate(25);
+    // frameRate(25);
   }
   
   this.draw = function() {
@@ -879,6 +918,264 @@ this.grid = function() {
           );
         }
       }
+    }
+  }
+}
+
+//==================Android Dream=========================================
+
+function AndroidDream(){
+  //Spiral animation
+  let rad = 0; //cycling circles 
+  let x = 0; // start for circle
+
+  //Cycling through sleep data
+  let sleep, night_data;
+  let num_nights; // number of nights of data
+  let new_night = true; // starting data for a new night
+  let night_index = 0; // index for each night
+  let night_data_length; // number of data points for a night
+  let night_data_index; // index for data points for a night
+  var sat; //saturation of background
+  var alp; //alpha of background
+
+  //text
+  let title = ['sleep', 'between', 'disrupted', 'dreams']
+  var xT;
+  var yT;
+  let j = 0;
+  let t = 4;
+
+  //sound
+  let osc;
+  let amp = 0;
+  let freq = 0;
+
+  this.setup = function() {
+    createCanvas(windowWidth, windowHeight);
+    colorMode(HSB, 360, 100, 100, 100);
+    // frameRate(8);
+    maxCount = height*.25;
+
+    //text set up
+    xT = width*.5;
+    yT = height*.1;
+    
+    //select month
+    let month = int(random(14));
+    // print(month);
+    sleep = loadJSON(list2[month]);
+    // console.log(Object.keys(sleep))
+    
+    // print(month, num_nights);
+    //grid
+    //tileCount = height/30;
+
+    //set up sound
+    osc = new p5.TriOsc(); // set frequency and type
+    osc.amp(amp);
+    osc.start();
+  }
+
+    this.draw = function() {
+    //initial background
+    if (frameCount == 1){
+      background(10);
+  
+    }
+    //set up to read through data
+    if (frameCount == 100){
+      num_nights = Object.keys(sleep).length;
+      print(num_nights);
+    }
+    //loading screen animation
+    if (frameCount < 250){  
+      background(10, 10);
+      this.circles();
+      if (frameCount%15==0 ){
+        textFont('Titillium Web')
+        textSize(55);
+        noStroke();
+        fill(200);
+        textAlign(CENTER);
+        text(title[j], xT, yT);
+        j += 1;
+        yT += 70;
+        }
+
+    }
+
+    //sleep mapping - use data to generate sound and animation
+    if (frameCount > 200){
+      if (new_night) {
+        // starting a new night of data
+        night_data = sleep[night_index]["levels"]["data"];
+        night_data_length = night_data.length;
+        new_night = false;
+        night_data_index = 0;
+    }
+      this.sleepMapping();
+
+    //display poem; after cycles through once starts again at random location
+    if (frameCount >= 250){
+      if (frameCount%20==0){
+      textSize(45);
+      noStroke();
+      textAlign(RIGHT);
+      xT = random(width*.6, width);
+      yT = random(height * .8, height);
+      // fill(200)
+      // rect(0, yT-50, xT+20, height* .2)
+      fill(200);
+      text(dreamText[t], xT, yT);
+        
+      t += 1;
+      }
+
+      if (t == 23){
+        t = int(random(22));
+      }
+    }
+  }
+  
+  if (frameCount == 500){
+    changeScene();
+  }
+    rad += 1; //increase circle path
+
+    if (rad == 1000){
+      rad = 0;
+    }
+
+  }
+
+  this.circles = function(){
+    //circles
+    x = rad;
+    let y = 0;
+    push();
+    translate(width*.5, height*.7);
+    let num1 = 30
+    let cir = (360 / num1) * (frameCount % num1);
+    rotate((radians(cir)));
+    for (let i = 0; i < height*.08; i++){
+      noFill();
+      strokeWeight(random(3));
+      stroke(random(250, 300), random(100), random(100));
+      // fill(random(255), 5)
+      circle(random(x), random(y), 5*i);
+    }
+    pop();
+  }
+
+  this.sleepMapping = function(){
+    // sleep level mapping
+    let sleepLevel = night_data[night_data_index]["level"];
+    let dateTime = night_data[night_data_index]["dateTime"];
+    
+    let duration = night_data[night_data_index]["seconds"];
+    sat = map(duration, 0, 7000, 1, 100);
+    alp = sat;
+    osc.freq(freq);
+    amp = map(duration, 0, 7000, 0.05, 0.5);
+    osc.amp(amp);
+    print(sleepLevel, duration);
+
+    if (sleepLevel == ["wake"]){
+      background(0, 100, sat, alp);
+      tint(200, sat, 100, alp);
+      image(awakeFace, width/2, 0, width/2, height);
+      //sound
+      freq = 600;
+      
+
+  }
+
+  if (sleepLevel == ["deep"]){
+    background(100, 100, sat, alp);
+    tint(300, sat, 100, alp);
+    image(deepFace, width/2, 0, width/2, height);
+    //sound
+    freq = 40;
+    // amp = 0.05;
+    
+  }
+  if (sleepLevel == ["light"]){
+    background(200, 100, sat, alp);
+    tint(0, sat, 100, alp);
+    image(lightFace, width/2, 0, width/2, height);
+    //sound
+    freq = 200;
+    // amp = 0.1;
+
+  }
+
+  if (sleepLevel == ["rem"]){
+    background(300, 100, sat, alp);
+    tint(100, sat, 100, alp);
+    image(remFace, width/2, 0, width/2, height);
+    //sound
+    freq = 400;
+    // amp = 0.3;
+    }
+
+  if (sleepLevel == ["restless"]){
+    background(255);
+    // tint(100, sat, 100, alp);
+    image(remFace, width/2, 0, width/2, height);
+    
+  }
+
+  if (sleepLevel == ["asleep"]){
+    background(0);
+    // tint(200, sat, 100, alp);
+    image(deepFace, width/2, 0, width/2, height);
+  }
+
+    //Counter loop
+    //display night
+    fill(10);
+    textSize(40);
+    noStroke();
+    textAlign(LEFT);
+    text(dateTime, 40, 40);
+    // text("Night: " + night_index + " Reading: " + night_data_index, 40, 80);
+    textAlign(RIGHT);
+    text(sleepLevel, random(width*.15, width*.5), random(120, height-50));
+
+    night_data_index += 1;
+    if (night_data_index == night_data_length) {
+    // have processed all data for a night
+    new_night = true;
+    night_index += 1;
+    // are there any more nights?
+    if (night_index == num_nights) {
+      night_index = 0;
+      new_night = true;
+      night_data_index = 0;
+      }
+    }
+  }
+}
+
+//==================Indeterminate System==================================
+
+function IndeterminateSystem(){
+  var img; 
+
+this.setup = function() {
+    createCanvas(windowWidth, windowHeight);
+    // frameRate(20);
+  }
+
+this.draw = function() {
+    // background(175, random(100), random(100), 10);
+    let num = int(random(1, 90));
+    tint(random(165, 190), 100, 100, random(100));
+    image(photos[num], 0, 0, width, height);
+  
+    if (frameCount == 500){
+      changeScene();
     }
   }
 }
