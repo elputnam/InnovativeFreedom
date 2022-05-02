@@ -251,6 +251,12 @@ function BrashPhone(){
   // let list1 = [];
   let bpm;
   let day;
+  // Oscillate variables
+  let spot;
+  let vel;
+  let colA;
+  let colB;
+ 
 
  
 
@@ -261,6 +267,8 @@ function BrashPhone(){
     num = height*0.3;
     for (let i = 0; i < num; i++) {
     swarm.push(new Screen());
+    spot = createVector(width/2, height/2);
+    vel = createVector(0,0);
   }
 
     //select day 
@@ -283,16 +291,33 @@ function BrashPhone(){
 
     //heartrate data mapping
     bpm = heartRate[B].value['bpm'];
-    colA = map(bpm, 60, 170, 0, 360);
-    colB = map(bpm, 60, 170, 0, 100);
+    colA = map(bpm, 60, 170, 0, 180);
+    colB = map(bpm, 60, 170, 180, 360);
     len = map(bpm, 60, 170, 100, 500);
     // sw = map(bpm, 60, 170, 10, 1);
     SB1 = map(bpm, 60, 170, 40, 100);
     SB2 = map(bpm, 60, 170, 100, 40);
     B += 1;
 
+    //move
+    let accel = p5.Vector.random2D();
+    accel.mult(random(2));
+    vel.add(accel);
+    vel.limit(3);
+    spot.add(vel);
+
+    if (spot.x > width){
+      spot.x = 0;
+    } else if (spot.x < 0) {
+      spot.x = width;
+    } else if (spot.y > height){
+      spot.y = 0;
+    } else if (spot.y < 0){
+      spot.y = height;
+    }
+
     //pixels
-    pix.push(new Pixel(createVector(mouseX, mouseY)));
+    pix.push(new Pixel(createVector(spot.x, spot.y)));
     for(let i = pix.length - 1; i >= 0; i--){
       let p = pix[i];
       p.run();
@@ -300,11 +325,13 @@ function BrashPhone(){
         pix.splice(i, 1);
         }
       }
+     
      }
-     if (frameCount == 500){
+
+     if (frameCount == 1000){
       changeScene();
       // reset();
-    }
+      }
     }
 
     this.noise = function(){
@@ -316,6 +343,7 @@ function BrashPhone(){
         // for (let j = 0; j < 10; j++)
         circle(random(width), random(height), random(100));
       }
+      
     }
 
     class Screen {
@@ -335,25 +363,34 @@ function BrashPhone(){
       }
       edges(){
         if (this.loc.x < 0) {
-          this.loc.x = mouseX;
-          this.loc.y = mouseY;
+          // this.loc.x = mouseX;
+          // this.loc.y = mouseY;
+          this.loc.x = spot.x;
+          this.loc.y = spot.y;
           }
         if (this.loc.x > width) {
-          this.loc.x = mouseX;
-          this.loc.y = mouseY;
+          // this.loc.x = mouseX;
+          // this.loc.y = mouseY;
+          this.loc.x = spot.x;
+          this.loc.y = spot.y;
           }
         if (this.loc.y < 0) {
-          this.loc.x = mouseX;
-          this.loc.y = mouseY;
+          // this.loc.x = mouseX;
+          // this.loc.y = mouseY;
+          this.loc.x = spot.x;
+          this.loc.y = spot.y;
           }
         if (this.loc.y > height) {
-          this.loc.x = mouseX;
-          this.loc.y = mouseY;
+          // this.loc.x = mouseX;
+          // this.loc.y = mouseY;
+          this.loc.x = spot.x;
+          this.loc.y = spot.y;
           }
       }
       update() {
-        this.spot = createVector(mouseX, mouseY)
-       this.force = p5.Vector.sub(this.spot, this.loc);
+        //this.spot = createVector(mouseX, mouseY)
+      //  this.force = p5.Vector.sub(this.spot, this.loc);
+       this.force = p5.Vector.sub(spot, this.loc);
         this.accel = createVector(random(-2, 2), random(-2, 2));
         this.accel.sub(this.force);
         //this.force = p5.Vector.add(this.loc, this.repel);
@@ -366,7 +403,7 @@ function BrashPhone(){
       display() {
         noFill();
         strokeWeight(1);
-        stroke(this.shade);
+        stroke(colB, this.shade, this.shade);
         for (let i = 0; i < this.len; i++) {
           circle(this.loc.x, this.loc.y, 5 * i);
         }
@@ -376,7 +413,7 @@ function BrashPhone(){
     class Pixel{
       constructor(loc){
         this.hue = random(70);
-        this.lum = 50;
+        this.lum = 20;
         this.loc = loc.copy();
         // this.len = random(10, len);
         this.len = len;
@@ -395,11 +432,13 @@ function BrashPhone(){
         rectMode(CENTER);
         // noStroke();
         // strokeWeight(sw);
-        stroke(random(100), this.lum)
+        // stroke(random(100), this.lum)
         // stroke(colB, this.lum);
         fill(colA, random(100), random(100), this.lum)
+        noStroke();
         //fill(this.hue, random(100), random(100), this.lum);
-        square(this.loc.x, this.loc.y, this.len);
+        // square(this.loc.x, this.loc.y, this.len);
+        square(spot.x, spot.y, this.len);
       }
       
       ghost(){
@@ -584,9 +623,11 @@ function GlibDrive(){
   let j = 0;
   let colA = 0;
   let colB = 300;
+  let H3 = 0;
   let tau = 0;
   let swarm = [];
   var num;
+  let spot;
 
 
 this.setup = function() {
@@ -603,7 +644,7 @@ this.setup = function() {
   console.log(list1[day]);
   //console.log(list1[10]);
   //heartRate = loadJSON('data/heart_rate-2020-05-01.json')
-  
+  spot = createVector(width/2, height/2);
   for (let i = 0; i < num; i++){
     swarm.push(new Element())
   }
@@ -635,10 +676,10 @@ this.draw = function() {
   for (let i = 0; i < swarm.length; i++){
     noStroke();
     //color blend based on mouse location
-    let col1 = map(mouseX, 0, width, 0, 360);
-    let col2 = map(mouseY, 0, height, 360, 0);
-    let blender = map(mouseX, 0, width, 0, 1);
-    let H3 = lerp(col1, col2, blender);
+    // let col1 = map(mouseX, 0, width, 0, 360);
+    // let col2 = map(mouseY, 0, height, 360, 0);
+    // let blender = map(mouseX, 0, width, 0, 1);
+    // let H3 = lerp(col1, col2, blender);
     fill(H3, random(100), random(100))
     swarm[i].oscillate();
     swarm[i].display();
@@ -646,6 +687,10 @@ this.draw = function() {
 
   if (frameCount == 500){
     changeScene();
+  }
+  H3 += 1;
+  if (H3 == 360){
+    H3 = 0;
   }
 }
 
@@ -688,12 +733,13 @@ class Element{
 
   oscillate() {
     this.angle.add(this.vel);
+    // spot.add = random(-2,2);
   }
 
   display() {
     let x = sin(this.angle.x) * this.amp.x;
     let y = sin(this.angle.y) * this.amp.y;
-    ellipse(mouseX + x, mouseY + y, random(10));
+    ellipse(spot.x + x, spot.y + y, random(10));
     }
   }
 }
@@ -703,14 +749,17 @@ class Element{
 function Tether(){
   let dance = [];
   let num;
+  let loc;
 
   this.setup = function() {
     reset();
     createCanvas(windowWidth, windowHeight);
     // frameRate(15);
     background(random(30));
+    loc = createVector(width/2, height/2);
     num = height*0.05;
     j = 0;
+    
     
     for (i = 0; i < num; i++){
       dance.push(new Element());
@@ -734,12 +783,32 @@ function Tether(){
     }  
   }
 
+  // this.scribble = function(){
+  //   noFill();
+  //   for (i = 0; i < num; i++){
+  //     stroke(random(300,360), random(0,100), 100);
+  //     curveTightness(random(3,6));
+  //     // curve(random(width), random(height), mouseX, mouseY, mouseX, mouseY,random(width), random(height));
+  //     }
+  // }
+
   this.scribble = function(){
-    noFill();
-    for (i = 0; i < num; i++){
-      stroke(random(300,360), random(0,100), 100);
-      curveTightness(random(3,6));
-      curve(random(width), random(height), mouseX, mouseY, mouseX, mouseY,random(width), random(height));
+      noFill();
+      for (i = 0; i < num; i++){
+            stroke(random(300,360), random(0,100), 100);
+            curveTightness(random(3,6));
+            curve(random(width), random(height), loc.x, loc.y, loc.x, loc.y, random(width), random(height));
+      }
+      loc.add(random(-5, 5), random(-5,5));
+
+      if (loc.x > width){
+        loc.x = 0;
+      } else if (loc.x < 0){
+        loc.x = width;
+      } else if (loc.y > height) {
+        loc.y = 0;
+      } else if (loc.y < 0) {
+        loc.y = height;
       }
   }
 
@@ -757,7 +826,7 @@ function Tether(){
       fill(random(200,300), random(360), random(360));
       //tethers
       stroke(random(0,100), random(0,100), 100, 50);
-      line(this.loc.x, this.loc.y, mouseX, mouseY);
+      line(this.loc.x, this.loc.y, loc.x, loc.y);
       //bodies
       stroke(0);
       rectMode(CENTER);
