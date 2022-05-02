@@ -229,7 +229,7 @@ this.draw = function() {
     textSize(random(10, 100))
     noStroke()
     fill(random(255))
-    textFont('VT323');
+    textFont('Titillium Web')
     text(phrase[i], random(width), random(height));
     i += 1;
     if (i >= 3){
@@ -569,6 +569,7 @@ function FerociousPatience(){
       background(0);
       textSize(50);
       fill(255);
+      textAlign(LEFT);
       text('lightly active', width*.05, height*0.2);
       text('very active', width*.55, height*0.3);
       text('moderately active', width*.05, height*0.6);
