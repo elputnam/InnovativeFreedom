@@ -243,6 +243,7 @@ this.draw = function() {
 //==================Brash Phone===========================================
 
 function BrashPhone(){
+  let dance = [];
   let swarm = [];
   let pix = [];
   let num;
@@ -256,20 +257,21 @@ function BrashPhone(){
   let vel;
   let colA;
   let colB;
- 
-
- 
 
   this.setup = function(){
     reset();
     createCanvas(windowWidth, windowHeight);
     frameRate(25);
-    num = height*0.3;
+    num = height*0.2;
     for (let i = 0; i < num; i++) {
-    swarm.push(new Screen());
+        swarm.push(new Screen());
+      }
+    for (let i = 0; i < num; i++){
+        dance.push(new Lattice());
+    }
     spot = createVector(width/2, height/2);
     vel = createVector(0,0);
-  }
+  
 
     //select day 
     day = floor(random(1,131));
@@ -278,12 +280,14 @@ function BrashPhone(){
   }
 
   this.draw = function(){
-    background(320, 50, 100, 10);
+    
     if (frameCount < 200){
+      background(random(150,250), 50, 100, 10);
       this.noise();
     }
 
     if (frameCount >= 200){
+    background(colA+100, 50, 100, 10);
     //screens
     for (let i = 0; i < swarm.length; i++) {
       swarm[i].run();
@@ -336,15 +340,70 @@ function BrashPhone(){
 
     this.noise = function(){
       // noStroke();
-      noFill()
-      strokeWeight(random(5));
-      stroke(random(175,360), random(100), random(100));
-      for (let l = 0; l < 500; l++){
-        // for (let j = 0; j < 10; j++)
-        circle(random(width), random(height), random(100));
+      // noFill()
+      for (let i = 0; i < dance.length; i++) {
+        dance[i].edges();
+        dance[i].step();
+        dance[i].display();
       }
-      
     }
+    
+    class Lattice{
+        constructor(){
+        //this.loc = createVector(width/2,height/2);
+          this.loc = createVector(width/2, height/2);
+          this.len = random(20, 60);
+          this.H = 0;
+        }
+      
+        display(){
+          //lines
+          strokeWeight(random(1, 5));
+          //fill(H-50, random(100), random(360), 0.2);
+          //stroke(this.H);
+          stroke(0, 100, random(20));
+          noFill();
+          beginShape();
+          vertex(this.loc.x, this.loc.y);
+          vertex(this.loc.x + this.len + random(-5, 5), this.loc.y + random(-5, 5));
+          vertex(this.loc.x + this.len + random(-5, 5), this.loc.y + this.len + random(-5, 5));
+          endShape();
+        }
+      
+        edges(){
+          if (this.loc.x <= 0){
+              this.loc.x += 5
+          }
+          if (this.loc.x >= width){
+              this.loc.x -= 5
+          }
+          if (this.loc.y <= 0){
+              this.loc.y += 5
+          }
+          if (this.loc.y >= height){
+            this.loc.y -= 5
+            }
+          if (this.H >= 150){
+            this.H = 0;
+          }
+          }
+      
+        step(){
+          this.H += random(10);
+          let choice = floor(random(4));
+          if (choice == 0){
+              this.loc.x+= random(5,20);
+          }
+          else if (choice == 1){
+              this.loc.x -= random(5,20);
+          }
+          else if (choice == 2){
+              this.loc.y += random(5,20);
+          } else {
+            this.loc.y -= random(5,20);
+            }
+          }
+      }
 
     class Screen {
       constructor() {
@@ -450,6 +509,7 @@ function BrashPhone(){
       }
     }    
   }
+
 
 //==================Ferocious Patience====================================
 
