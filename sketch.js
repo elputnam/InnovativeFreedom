@@ -189,6 +189,9 @@ this.setup = function() {
 }
 
 this.draw = function() {    
+  if (frameCount == 1){
+    frameRate(20);
+  }
   background(random(30), 10);
   strokeWeight(1);
   if (frameCount < 250){
@@ -280,7 +283,9 @@ function BrashPhone(){
   }
 
   this.draw = function(){
-    
+    if (frameCount == 1){
+      frameRate(20);
+    }
     if (frameCount < 200){
       background(random(150,250), 50, 100, 10);
       this.noise();
@@ -558,47 +563,55 @@ function FerociousPatience(){
     }
 
     this.draw = function(){
-    if (frameCount < 100){
-      // background(random(360), 100, 10, 10);
-      background(0);
-      this.uncertainFoal();
+      if (frameCount == 1){
+        frameRate(15);
       }
 
-    if (frameCount==100){
-      num_days = Object.keys(lightActive).length;
-      background(0);
-      textSize(50);
-      fill(255);
-      textAlign(LEFT);
-      text('lightly active', width*.05, height*0.2);
-      text('very active', width*.55, height*0.3);
-      text('moderately active', width*.05, height*0.6);
-      text('sedentary', width*.55, height*0.8);
-      // print(num_days);
-      // num_steps = Object.keys(stepCount).length;
-    }
-
-    if (frameCount==150){
-      background(0);
-    } 
-
-    if (frameCount > 150){
-      light = lightActive[day_num]['value'];
-      very = veryActive[day_num]['value'];
-      moderate = moderateActive[day_num]['value'];
-      sedentary = notActive[day_num]['value'];
-      back = map(very, 0, 50, 175, 0);
-      day_num += 1;
-      this.activityMapping();
-
-      if (day_num >= num_days){
-        day_num = 0;
+      //loading screen
+      if (frameCount < 100){
+        // background(random(360), 100, 10, 10);
+        background(0);
+        this.uncertainFoal();
         }
+      
+      //show text 
+      if (frameCount==100){
+        num_days = Object.keys(lightActive).length;
+        background(0);
+        textSize(50);
+        fill(255);
+        textAlign(LEFT);
+        text('lightly active', width*.05, height*0.2);
+        text('very active', width*.55, height*0.3);
+        text('moderately active', width*.05, height*0.6);
+        text('sedentary', width*.55, height*0.8);
+        // print(num_days);
+        // num_steps = Object.keys(stepCount).length;
       }
-      if (frameCount == 500){
-        changeScene();
-        reset();
-      }
+
+      //clear background
+      if (frameCount==150){
+        background(0);
+      } 
+
+      //start animation
+      if (frameCount > 150){
+        light = lightActive[day_num]['value'];
+        very = veryActive[day_num]['value'];
+        moderate = moderateActive[day_num]['value'];
+        sedentary = notActive[day_num]['value'];
+        back = map(very, 0, 50, 175, 0);
+        day_num += 1;
+        this.activityMapping();
+
+        if (day_num >= num_days){
+          day_num = 0;
+          }
+        }
+        if (frameCount == 500){
+          changeScene();
+          reset();
+        }
     }
 
     this.uncertainFoal = function(){
@@ -694,7 +707,7 @@ function GlibDrive(){
 this.setup = function() {
   createCanvas(windowWidth, windowHeight);
   reset();
-  // frameRate(15);
+  frameRate(15);
   num = height*.3;
   j = 0;
   //console.log(list1);
@@ -712,6 +725,10 @@ this.setup = function() {
 }
 
 this.draw = function() {
+  if (frameCount == 1){
+    frameRate(15);
+  }
+
   background(random(30), 10);
   //heartFetch();
   // debugger
@@ -815,7 +832,7 @@ function Tether(){
   this.setup = function() {
     reset();
     createCanvas(windowWidth, windowHeight);
-    // frameRate(15);
+    frameRate(15);
     background(random(30));
     loc = createVector(width/2, height/2);
     num = height*0.05;
@@ -828,6 +845,10 @@ function Tether(){
   }
   
   this.draw = function() {
+    if (frameCount == 1){
+      frameRate(15);
+    }
+
     background(random(30), 10);
     strokeWeight(1);
     print(frameCount);
@@ -947,11 +968,14 @@ function HeartGrid(){
     heartRate = loadJSON(list1[day]);
     x1 = width/2;
     y1 = height/2;
-    // frameRate(25);
+    frameRate(25);
   }
   
   this.draw = function() {
-    
+    if (frameCount == 1){
+      frameRate(25);
+    }
+
     if (frameCount <= 100){
       // background(170, 50, 100);
       fill(random(255), random(100));
@@ -1084,7 +1108,7 @@ function AndroidDream(){
   this.setup = function() {
     createCanvas(windowWidth, windowHeight);
     colorMode(HSB, 360, 100, 100, 100);
-    // frameRate(8);
+    frameRate(8);
     maxCount = height*.25;
 
     //text set up
@@ -1108,9 +1132,12 @@ function AndroidDream(){
   }
 
     this.draw = function() {
-    //initial background
+    //initial background and rest frameRate
     if (frameCount == 1){
       background(10);
+      frameRate(8);
+      j = 0;
+      yT = height*.1;
   
     }
     //set up to read through data
@@ -1295,10 +1322,13 @@ function IndeterminateSystem(){
 
 this.setup = function() {
     createCanvas(windowWidth, windowHeight);
-    // frameRate(20);
+    frameRate(20);
   }
 
 this.draw = function() {
+  if (frameCount == 1){
+    frameRate(20);
+  }
     // background(175, random(100), random(100), 10);
     let num = int(random(1, 90));
     tint(random(165, 190), 100, 100, random(100));
