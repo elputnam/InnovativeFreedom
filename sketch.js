@@ -959,6 +959,11 @@ function HeartGrid(){
 
   //pixel grid variable
   let tileCount;
+
+  //sound
+  let osc;
+  let amp = 0;
+  let freq = 0;
   
   this.setup = function() {
     createCanvas(windowWidth, windowHeight);
@@ -969,6 +974,11 @@ function HeartGrid(){
     x1 = width/2;
     y1 = height/2;
     frameRate(25);
+    
+    //set up sound
+    osc = new p5.TriOsc(); // set frequency and type
+    osc.amp(amp);
+    osc.start();
   }
   
   this.draw = function() {
@@ -986,6 +996,10 @@ function HeartGrid(){
     if (frameCount >= 100){
     //read heartRate data
     let bpm = heartRate[B].value['bpm'];
+    freq = map(bpm, 60, 170, 40, 200);
+    amp = 0.5
+    osc.amp(amp);
+    osc.freq(freq);
     let b = map(bpm,60,170,10,255)
     let sw = map(bpm,60,170,3,5)
     B += 1;
