@@ -177,6 +177,7 @@ function changeScene(){
 function ViralTime(){
   let phrase = ['Time' ,'is' , 'glitchy'];
   let i;
+  let pinkNoise;
 
 this.setup = function() {
   reset();
@@ -186,6 +187,9 @@ this.setup = function() {
   //frameRate(10);
   i = 0;
   j = 0;
+  pinkNoise = new p5.Noise('pink');
+  pinkNoise.start();
+  pinkNoise.amp(0.02);
 }
 
 this.draw = function() {    
@@ -828,7 +832,6 @@ function Tether(){
   let dance = [];
   let num;
   let loc;
-  let pinkNoise; 
 
   this.setup = function() {
     reset();
@@ -838,8 +841,6 @@ function Tether(){
     loc = createVector(width/2, height/2);
     num = height*0.05;
     j = 0;
-    pinkNoise = new p5.Noise('pink');
-    pinkNoise.start();
     
     
     for (i = 0; i < num; i++){
