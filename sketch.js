@@ -828,6 +828,7 @@ function Tether(){
   let dance = [];
   let num;
   let loc;
+  let pinkNoise; 
 
   this.setup = function() {
     reset();
@@ -837,6 +838,8 @@ function Tether(){
     loc = createVector(width/2, height/2);
     num = height*0.05;
     j = 0;
+    pinkNoise = new p5.Noise('pink');
+    pinkNoise.start();
     
     
     for (i = 0; i < num; i++){
@@ -852,6 +855,8 @@ function Tether(){
     background(random(30), 10);
     strokeWeight(1);
     print(frameCount);
+    
+    
     
     for (i = 0; i < dance.length; i++){
       dance[i].display();
