@@ -16,6 +16,9 @@ var lightFace;
 var deepFace;
 var remFace;
 
+//Sound variables
+// let osc;
+
 //Indeterminate System Variables
 var photos = [];
 
@@ -109,6 +112,7 @@ function keyPressed(){
           break;
         case '2':
           reset();
+          // osc.start();
           mgr.showScene( BrashPhone );
           break;
         case '3':
@@ -261,6 +265,17 @@ function BrashPhone(){
   let colA;
   let colB;
 
+  //sound
+  let osc;
+  let amp = 0;
+  let freq = 200;
+  let modMaxFreq = 2000;
+  let modMinFreq = 200;
+  let modMaxDepth = 150;
+  let modMinDepth = -150;
+  
+    
+
   this.setup = function(){
     reset();
     createCanvas(windowWidth, windowHeight);
@@ -279,6 +294,18 @@ function BrashPhone(){
     //select day 
     day = floor(random(1,131));
     heartRate = loadJSON(list1[day]);
+
+    //set up sound
+    osc = new p5.TriOsc(); // set frequency and type
+    osc.amp(amp);
+    osc.start();
+    osc.freq(freq);
+
+
+    modulator = new p5.Oscillator('square');
+    modulator.start();
+    modulator.disconnect();
+    osc.freq(modulator)
     
   }
 
@@ -307,7 +334,17 @@ function BrashPhone(){
     SB1 = map(bpm, 60, 170, 40, 100);
     SB2 = map(bpm, 60, 170, 100, 40);
     B += 1;
-
+    //sound
+    freq = map(bpm, 60, 170, 200, 3000);
+    // smooth(1);
+    amp = 0.3;
+    osc.amp(amp);
+    // osc.freq(freq);
+    let modFreq = map(bpm, 60, 200, modMinFreq,modMaxFreq);
+    modulator.freq(modFreq);
+    let modDepth = map(bpm, 60, 200, modMinDepth, modMaxDepth);
+    modulator.amp(modDepth);
+    // osc.freq(modulator);
     //move
     let accel = p5.Vector.random2D();
     accel.mult(random(2));
@@ -339,6 +376,7 @@ function BrashPhone(){
 
      if (frameCount == 1000){
       changeScene();
+      // osc.stop();
       // reset();
       }
     }
@@ -976,7 +1014,7 @@ function HeartGrid(){
     frameRate(25);
     
     //set up sound
-    osc = new p5.TriOsc(); // set frequency and type
+    osc = new p5.SinOsc(); // set frequency and type
     osc.amp(amp);
     osc.start();
   }
@@ -996,7 +1034,8 @@ function HeartGrid(){
     if (frameCount >= 100){
     //read heartRate data
     let bpm = heartRate[B].value['bpm'];
-    freq = map(bpm, 60, 170, 40, 200);
+    freq = map(bpm, 60, 170, 200, 2000);
+    smooth(0.5);
     amp = 0.5
     osc.amp(amp);
     osc.freq(freq);
@@ -1058,6 +1097,7 @@ function HeartGrid(){
 
     if (frameCount == 500){
     changeScene();
+    osc.stop();
     }
   }
 
@@ -1211,6 +1251,7 @@ function AndroidDream(){
   
   if (frameCount == 500){
     changeScene();
+    osc.stop();
   }
     rad += 1; //increase circle path
 
