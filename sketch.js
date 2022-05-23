@@ -306,10 +306,10 @@ function BrashPhone(){
     osc.freq(freq);
 
 
-    modulator = new p5.Oscillator('square');
+    modulator = new p5.Oscillator('triangle');
     modulator.start();
     modulator.disconnect();
-    osc.freq(modulator)
+    osc.freq(modulator);
     
   }
 
@@ -341,7 +341,7 @@ function BrashPhone(){
     //sound
     freq = map(bpm, 60, 170, 200, 3000);
     // smooth(1);
-    amp = 0.3;
+    amp = 0.15;
     osc.amp(amp);
     // osc.freq(freq);
     let modFreq = map(bpm, 60, 200, modMinFreq,modMaxFreq);
@@ -380,8 +380,6 @@ function BrashPhone(){
 
      if (frameCount == 1000){
       changeScene();
-      // osc.stop();
-      // reset();
       }
     }
 
@@ -745,6 +743,10 @@ function GlibDrive(){
   var num;
   let spot;
 
+  //sound
+  let carrier;
+  let mod;
+
 
 this.setup = function() {
   createCanvas(windowWidth, windowHeight);
@@ -764,6 +766,21 @@ this.setup = function() {
   for (let i = 0; i < num; i++){
     swarm.push(new Element())
   }
+
+  //sound
+  carrier = new p5.Oscillator(); // connects to master output by default
+  carrier.freq(340);
+  carrier.amp(0);
+  carrier.start();
+
+  mod = new p5.Oscillator('triangle');
+  mod.disconnect(); // disconnect the modulator from master output
+  mod.freq(0);
+  mod.amp(0);
+  mod.start();
+  carrier.amp(mod.scale(-1, 1, 1, -1));
+
+
 }
 
 this.draw = function() {
@@ -778,9 +795,14 @@ this.draw = function() {
  
   if (frameCount >= 150){
     bpm = heartRate[B].value['bpm'];
-    colA = map(bpm, 60, 170, 0, 360);
-    colB = map(bpm, 60, 170, 360, 0);
+    colA = map(bpm, 60, 180, 0, 360);
+    colB = map(bpm, 60, 180, 360, 0);
+    let modFreq = map(bpm, 60, 180, 20, 0)
+    let modAmp = map(bpm, 60, 180, 0, 1)
     B += 1;
+
+    mod.freq(modFreq);
+    mod.amp(modAmp, 0.1);
 
     push();
     let inc = random(-2,2);
@@ -1103,7 +1125,6 @@ function HeartGrid(){
 
     if (frameCount == 500){
     changeScene();
-    osc.stop();
     }
   }
 
@@ -1257,7 +1278,6 @@ function AndroidDream(){
   
   if (frameCount == 500){
     changeScene();
-    osc.stop();
   }
     rad += 1; //increase circle path
 
