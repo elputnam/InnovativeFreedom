@@ -798,8 +798,6 @@ this.setup = function() {
   mod.amp(0);
   mod.start();
   carrier.amp(mod.scale(-1, 1, 1, -1));
-
-
 }
 
 this.draw = function() {
@@ -1048,6 +1046,7 @@ function HeartGrid(){
 
   //sound
   let osc;
+  let mod;
   let amp = 0;
   let freq = 0;
   
@@ -1062,15 +1061,23 @@ function HeartGrid(){
     frameRate(25);
     
     //set up sound
-    osc = new p5.SinOsc(); // set frequency and type
+    osc = new p5.Oscillator(); // set frequency and type
     osc.amp(amp);
     osc.start();
+
+    mod = new p5.Oscillator('sine');
+    mod.disconnect(); // disconnect the modulator from master output
+    mod.freq(0);
+    mod.amp(0);
+    mod.start();
+    osc.amp(mod.scale(-1, 1, 1, -1));
+
   }
   
   this.draw = function() {
     if (frameCount == 1){
       frameRate(25);
-      osc.amp(amp);
+      //osc.amp(amp);
     }
 
     if (frameCount <= 100){
@@ -1083,11 +1090,13 @@ function HeartGrid(){
     if (frameCount >= 100){
     //read heartRate data
     let bpm = heartRate[B].value['bpm'];
-    freq = map(bpm, 60, 170, 200, 2000);
-    smooth(0.5);
-    amp = 0.3
-    osc.amp(amp);
-    osc.freq(freq);
+    let modfreq = map(bpm, 60, 170, 0, 200);
+    let modAmp = map(bpm, 60, 180, 0, 1)
+    // smooth(0.5);
+    // amp = 0.3
+    // osc.amp(amp);
+    mod.freq(modfreq);
+    mod.amp(modAmp, 0.1);
     let b = map(bpm,60,170,10,255)
     let sw = map(bpm,60,170,3,5)
     B += 1;
@@ -1145,7 +1154,7 @@ function HeartGrid(){
     }
 
     if (frameCount == 2000){
-      osc.amp(0.05);
+      mod.amp(0.01);
       changeScene();
     }
   }
