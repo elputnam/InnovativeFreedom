@@ -654,6 +654,7 @@ function FerociousPatience(){
 
       //start animation
       if (frameCount > 150){
+        let dateTime = lightActive[day_num]["dateTime"];
         light = lightActive[day_num]['value'];
         very = veryActive[day_num]['value'];
         moderate = moderateActive[day_num]['value'];
@@ -661,6 +662,13 @@ function FerociousPatience(){
         back = map(very, 0, 50, 175, 0);
         day_num += 1;
         this.activityMapping();
+
+        //Display night
+        fill(255);
+        textSize(40);
+        noStroke();
+        textAlign(RIGHT);
+        text(dateTime, width-40, height-40);
 
         if (day_num >= num_days){
           day_num = 0;
@@ -944,7 +952,7 @@ function Tether(){
       }
     
     this.scribble();
-    if (frameCount == 2000){
+    if (frameCount == int(random(500,2000))){
       changeScene();
     }  
   }
@@ -1449,7 +1457,7 @@ this.draw = function() {
     tint(random(165, 190), 100, 100, random(100));
     image(photos[num], 0, 0, width, height);
   
-    if (frameCount == 500){
+    if (frameCount == int(random(500, 2000))){
       changeScene();
     }
   }
