@@ -1267,8 +1267,6 @@ function AndroidDream(){
       frameRate(8);
       j = 0;
       yT = height*.1;
-      textAlign(CENTER)
-  
     }
     //set up to read through data
     if (frameCount == 100){
