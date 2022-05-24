@@ -194,6 +194,7 @@ function ViralTime(){
   let phrase = ['Time' ,'is' , 'glitchy'];
   let i;
   let pinkNoise;
+  let change;
   
 
 this.setup = function() {
@@ -921,6 +922,7 @@ function Tether(){
   let dance = [];
   let num;
   let loc;
+  let change;
 
   this.setup = function() {
     reset();
@@ -1449,26 +1451,27 @@ function AndroidDream(){
 
 function IndeterminateSystem(){
   var img; 
+  let change;
 
-this.setup = function() {
-    createCanvas(windowWidth, windowHeight);
-    frameRate(20);
-  }
-
-this.draw = function() {
-  if (frameCount == 1){
-    frameRate(20);
-    change = int(random(500, 2000));
-  }
-    // background(175, random(100), random(100), 10);
-    let num = int(random(1, 90));
-    tint(random(165, 190), 100, 100, random(100));
-    image(photos[num], 0, 0, width, height);
-  
-    if (frameCount == change){
-      changeScene();
+  this.setup = function() {
+      createCanvas(windowWidth, windowHeight);
+      frameRate(20);
     }
-  }
+
+  this.draw = function() {
+    if (frameCount == 1){
+      frameRate(20);
+      change = int(random(500, 2000));
+    }
+      // background(175, random(100), random(100), 10);
+      let num = int(random(1, 90));
+      tint(random(165, 190), 100, 100, random(100));
+      image(photos[num], 0, 0, width, height);
+    
+      if (frameCount == change){
+        changeScene();
+      }
+    }
 }
 
 //==================Refurbished Notions===================================
