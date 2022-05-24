@@ -394,7 +394,8 @@ function BrashPhone(){
      
      }
 
-     if (frameCount == 1000){
+     let num_measure = Object.keys(heartRate).length;
+     if (frameCount == num_measure){
       osc.amp(0.05);
       changeScene();
       
@@ -852,7 +853,8 @@ this.draw = function() {
     swarm[i].display();
     }
 
-  if (frameCount == 1000){
+  let num_measure = Object.keys(heartRate).length;
+  if (frameCount == num_measure){
     mod.amp(0.05);
     changeScene();
   }
@@ -952,7 +954,9 @@ function Tether(){
       }
     
     this.scribble();
-    if (frameCount == int(random(500,2000))){
+
+
+    if (frameCount == floor(random(500,2000))){
       changeScene();
     }  
   }
@@ -1161,7 +1165,8 @@ function HeartGrid(){
       }
     }
 
-    if (frameCount == 2000){
+  let num_measure = Object.keys(heartRate).length;
+  if (frameCount == num_measure){
       mod.amp(0.01);
       changeScene();
     }
@@ -1457,7 +1462,7 @@ this.draw = function() {
     tint(random(165, 190), 100, 100, random(100));
     image(photos[num], 0, 0, width, height);
   
-    if (frameCount == int(random(500, 2000))){
+    if (frameCount == floor(random(500, 2000))){
       changeScene();
     }
   }
@@ -1494,7 +1499,7 @@ function RefurbishedNotions(){
     this.ramblingNotions();
     // myVoice.listVoices();
 
-    if (frameCount == int(random(500,2000))){
+    if (frameCount == floor(random(500,2000))){
       changeScene();
     }
   }
