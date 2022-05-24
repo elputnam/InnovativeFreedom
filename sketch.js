@@ -213,6 +213,7 @@ this.setup = function() {
 this.draw = function() {    
   if (frameCount == 1){
     frameRate(20);
+    change = int(random(500, 2000));
   }
   background(random(30), 10);
   strokeWeight(1);
@@ -223,7 +224,7 @@ this.draw = function() {
       this.timeisGlitchy();
     }
   
-  if (frameCount == 500){
+  if (frameCount == change){
     changeScene();
   }
   }
@@ -939,6 +940,7 @@ function Tether(){
   this.draw = function() {
     if (frameCount == 1){
       frameRate(15);
+      change = int(random(500,2000));
     }
 
     background(random(30), 10);
@@ -956,7 +958,7 @@ function Tether(){
     this.scribble();
 
 
-    if (frameCount == floor(random(500,2000))){
+    if (frameCount == change){
       changeScene();
     }  
   }
@@ -1456,13 +1458,14 @@ this.setup = function() {
 this.draw = function() {
   if (frameCount == 1){
     frameRate(20);
+    change = int(random(500, 2000));
   }
     // background(175, random(100), random(100), 10);
     let num = int(random(1, 90));
     tint(random(165, 190), 100, 100, random(100));
     image(photos[num], 0, 0, width, height);
   
-    if (frameCount == floor(random(500, 2000))){
+    if (frameCount == change){
       changeScene();
     }
   }
