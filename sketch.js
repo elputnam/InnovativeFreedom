@@ -32,7 +32,10 @@ let sedentaryList = []; //sedentary minutes
 let sedImages = [];
 let lowImages = [];
 let midImages = [];
-let highImages = []
+let highImages = [];
+
+//Text variables
+let myNotions = [];
 
 function preload(){
   
@@ -71,6 +74,9 @@ function preload(){
   for (let i = 1; i < 91; i++){
     photos[i] = loadImage("images/maternalDance-" + i + ".png");
   }
+
+  //Load notions
+  myNotions = loadJSON("notions.json", myNotions);
 }
 
 function setup() {
@@ -88,7 +94,7 @@ function setup() {
   mgr.addScene ( HeartGrid );
   mgr.addScene ( AndroidDream );
   mgr.addScene ( IndeterminateSystem );
-
+  mgr.addScene ( RefurbishedNotions );
   mgr.showNextScene();
 }
 
@@ -139,6 +145,10 @@ function keyPressed(){
           reset();
           mgr.showScene( IndeterminateSystem );
           break;
+        case '9':
+          reset();
+          mgr.showScene(RefurbishedNotions);
+          break;
     }
   }
 
@@ -150,7 +160,7 @@ function windowResized() {
 //changes between scenes automatically and randomly
 function changeScene(){
   reset();
-  let chance = floor(random(1,9));
+  let chance = floor(random(1,10));
   
   if (chance == 1){
   mgr.showScene(BrashPhone);
@@ -168,6 +178,8 @@ function changeScene(){
     mgr.showScene(AndroidDream);
   } else if (chance == 8){
     mgr.showScene(IndeterminateSystem);
+  } else if (chance == 9){
+    mgr.showScene(RefurbishedNotions);
   }
 }
 
@@ -182,6 +194,7 @@ function ViralTime(){
   let phrase = ['Time' ,'is' , 'glitchy'];
   let i;
   let pinkNoise;
+  
 
 this.setup = function() {
   reset();
@@ -191,6 +204,7 @@ this.setup = function() {
   //frameRate(10);
   i = 0;
   j = 0;
+  //pink noise generator
   pinkNoise = new p5.Noise('pink');
   pinkNoise.start();
   pinkNoise.amp(0.02);
@@ -283,8 +297,9 @@ function BrashPhone(){
   this.setup = function(){
     reset();
     createCanvas(windowWidth, windowHeight);
-    frameRate(25);
-    num = height*0.2;
+    frameRate(30);
+    //frameRate(25);
+    num = height*0.07;
     for (let i = 0; i < num; i++) {
         swarm.push(new Screen());
       }
@@ -316,6 +331,7 @@ function BrashPhone(){
   this.draw = function(){
     if (frameCount == 1){
       frameRate(20);
+      osc.amp(amp);
     }
     if (frameCount < 200){
       background(random(150,250), 50, 100, 10);
@@ -379,7 +395,9 @@ function BrashPhone(){
      }
 
      if (frameCount == 1000){
+      osc.amp(0.05);
       changeScene();
+      
       }
     }
 
@@ -827,7 +845,8 @@ this.draw = function() {
     swarm[i].display();
     }
 
-  if (frameCount == 500){
+  if (frameCount == 1000){
+    mod.amp(0.05);
     changeScene();
   }
   H3 += 1;
@@ -926,7 +945,7 @@ function Tether(){
       }
     
     this.scribble();
-    if (frameCount == 500){
+    if (frameCount == 2000){
       changeScene();
     }  
   }
@@ -1050,6 +1069,7 @@ function HeartGrid(){
   this.draw = function() {
     if (frameCount == 1){
       frameRate(25);
+      osc.amp(amp);
     }
 
     if (frameCount <= 100){
@@ -1123,8 +1143,9 @@ function HeartGrid(){
       }
     }
 
-    if (frameCount == 500){
-    changeScene();
+    if (frameCount == 2000){
+      osc.amp(0.05);
+      changeScene();
     }
   }
 
@@ -1276,9 +1297,9 @@ function AndroidDream(){
     }
   }
   
-  if (frameCount == 500){
-    changeScene();
-  }
+  // if (frameCount == night_data_length - 1){
+  //   changeScene();
+  // }
     rad += 1; //increase circle path
 
     if (rad == 1000){
@@ -1391,6 +1412,8 @@ function AndroidDream(){
       night_index = 0;
       new_night = true;
       night_data_index = 0;
+      osc.amp(0.05);
+      changeScene();
       }
     }
   }
@@ -1419,4 +1442,83 @@ this.draw = function() {
       changeScene();
     }
   }
+}
+
+//==================Refurbished Notions===================================
+
+function RefurbishedNotions(){
+  //Grid variables
+  let tileCount;
+  let locx;
+  let locy;
+  let hue1;
+
+  var  myVoice = new p5.Speech();
+
+  this.setup = function() {
+    createCanvas(windowWidth, windowHeight);
+    colorMode(HSB, 360, 100, 100, 100);
+    tileCount = height*0.1
+    locx = width/2;
+    locy = height/2;
+    frameRate(10);
+    amplitude = new p5.Amplitude(); 
+  }
+
+  this.draw = function() {
+    // console.log(frameCount);
+    if (frameCount == 1){
+      frameRate(10);
+    }
+    background(0);
+    this.grid();
+    this.ramblingNotions();
+    // myVoice.listVoices();
+
+    if (frameCount == int(random(500,2000))){
+      changeScene();
+    }
+  }
+
+  this.grid = function(){
+    for (let gridY = 0; gridY < tileCount; gridY++) {
+      for (let gridX = 0; gridX < tileCount; gridX++) {
+        let posX = (width / tileCount) * gridX;
+        let posY = (height / tileCount) * gridY;
+        noStroke();
+        rect(posX, posY, height/tileCount);
+        
+        var toggle = floor(random(1, 3));
+         if (toggle == 1){
+           //fill(random(360), 100, 50);
+           fill(hue1*30, random(100), random(100));
+      } else {
+          fill(random(255));
+          }
+        }
+      }
+    }
+  
+  
+  this.windowResized = function(){
+    resizeCanvas(windowWidth, windowHeight);
+  }
+  
+  this.ramblingNotions = function(){
+    let i = int(random(myNotions.notions.length));
+    hue1 = i;
+    //myVoice.speak(myNotions.notions[i].title);
+    // myVoice.setVoice('Google UK English Male');
+    
+    myVoice.setRate(0.8);
+    myVoice.setVolume(0.7);
+    myVoice.speak(myNotions.notions[i].text);
+    // amplitude.setInput();
+    // tileCount = map(level, 0, 1, height*0.07, height*0.1)
+  }
+  
+  this.mouseClicked = function(){
+    //ramblingNotions();
+  }
+
 }
