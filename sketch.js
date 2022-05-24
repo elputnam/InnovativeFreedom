@@ -678,10 +678,10 @@ function FerociousPatience(){
           changeScene();
           }
         }
-        if (frameCount == 500){
-          changeScene();
-          reset();
-        }
+        // if (frameCount == 500){
+        //   changeScene();
+        //   reset();
+        // }
     }
 
     this.uncertainFoal = function(){
