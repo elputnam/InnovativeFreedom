@@ -8,3 +8,8 @@ Includes:
 - Brash phone (with Atom Riverbed Lattice): incorporates heartrate data
 - glib drive: incorporates heartrate data
 - Ferocious patience (with Uncertain Foal): incorporates activity minute data
+- Android Dream: sleep data
+- Tether
+- Heart Grid: heartrate data
+- Indeterminate System
+- Refurbished notions: text to speech
