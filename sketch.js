@@ -94,7 +94,7 @@ function setup() {
   mgr.addScene ( HeartGrid );
   mgr.addScene ( AndroidDream );
   mgr.addScene ( IndeterminateSystem );
-  mgr.addScene ( RefurbishedNotions );
+  // mgr.addScene ( RefurbishedNotions );
   mgr.showNextScene();
 }
 
@@ -145,10 +145,10 @@ function keyPressed(){
           reset();
           mgr.showScene( IndeterminateSystem );
           break;
-        case '9':
-          reset();
-          mgr.showScene(RefurbishedNotions);
-          break;
+        // case '9':
+        //   reset();
+        //   mgr.showScene(RefurbishedNotions);
+        //   break;
     }
   }
 
@@ -160,7 +160,7 @@ function windowResized() {
 //changes between scenes automatically and randomly
 function changeScene(){
   reset();
-  let chance = floor(random(1,10));
+  let chance = floor(random(1,9));
   
   if (chance == 1){
   mgr.showScene(BrashPhone);
@@ -178,9 +178,9 @@ function changeScene(){
     mgr.showScene(AndroidDream);
   } else if (chance == 8){
     mgr.showScene(IndeterminateSystem);
-  } else if (chance == 9){
-    mgr.showScene(RefurbishedNotions);
-  }
+  } //else if (chance == 9){
+  //   mgr.showScene(RefurbishedNotions);
+  // }
 }
 
 //========================================================================
