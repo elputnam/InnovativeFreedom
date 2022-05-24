@@ -664,6 +664,7 @@ function FerociousPatience(){
 
         if (day_num >= num_days){
           day_num = 0;
+          changeScene();
           }
         }
         if (frameCount == 500){
@@ -1084,7 +1085,7 @@ function HeartGrid(){
     let bpm = heartRate[B].value['bpm'];
     freq = map(bpm, 60, 170, 200, 2000);
     smooth(0.5);
-    amp = 0.5
+    amp = 0.3
     osc.amp(amp);
     osc.freq(freq);
     let b = map(bpm,60,170,10,255)
