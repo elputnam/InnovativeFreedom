@@ -299,7 +299,7 @@ function BrashPhone(){
     createCanvas(windowWidth, windowHeight);
     frameRate(30);
     //frameRate(25);
-    num = height*0.07;
+    num = height*0.1;
     for (let i = 0; i < num; i++) {
         swarm.push(new Screen());
       }
