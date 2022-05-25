@@ -145,10 +145,10 @@ function keyPressed(){
           reset();
           mgr.showScene( IndeterminateSystem );
           break;
-        // case '9':
-        //   reset();
-        //   mgr.showScene(RefurbishedNotions);
-        //   break;
+        case '9':
+          reset();
+          mgr.showScene(RefurbishedNotions);
+          break;
     }
   }
 
@@ -160,7 +160,7 @@ function windowResized() {
 //changes between scenes automatically and randomly
 function changeScene(){
   reset();
-  let chance = floor(random(1,9));
+  let chance = floor(random(1,10));
   
   if (chance == 1){
   mgr.showScene(BrashPhone);
@@ -178,9 +178,9 @@ function changeScene(){
     mgr.showScene(AndroidDream);
   } else if (chance == 8){
     mgr.showScene(IndeterminateSystem);
-  } //else if (chance == 9){
-  //   mgr.showScene(RefurbishedNotions);
-  // }
+  } else if (chance == 9){
+    mgr.showScene(RefurbishedNotions);
+  }
 }
 
 //========================================================================
@@ -1095,7 +1095,7 @@ function HeartGrid(){
   this.setup = function() {
     createCanvas(windowWidth, windowHeight);
     colorMode(HSB, 360, 100, 100, 100);
-    background(170, 50, 100);
+    
     // day = int(random(1,131));
     // heartRate = loadJSON(list1[day]);
     x1 = width/2;
@@ -1124,6 +1124,7 @@ function HeartGrid(){
       heartRate = loadJSON(list1[day]);
       B = 0;
       change = int(random(1000,5000));
+      background(170, 50, 100, 10);
     }
 
     if (frameCount <= 100){
@@ -1533,13 +1534,14 @@ function RefurbishedNotions(){
     // console.log(frameCount);
     if (frameCount == 1){
       frameRate(10);
+      hue1 = random(360);
     }
-    background(0);
+    background(0, 1);
     this.grid();
-    this.ramblingNotions();
+    //this.ramblingNotions();
     // myVoice.listVoices();
 
-    if (frameCount == floor(random(500,2000))){
+    if (frameCount == 100){
       changeScene();
     }
   }
@@ -1555,9 +1557,9 @@ function RefurbishedNotions(){
         var toggle = floor(random(1, 3));
          if (toggle == 1){
            //fill(random(360), 100, 50);
-           fill(hue1*30, random(100), random(100));
+           fill(hue1, random(100), random(100), random(30));
       } else {
-          fill(random(255));
+          fill(random(255), random(30));
           }
         }
       }
