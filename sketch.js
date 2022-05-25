@@ -403,7 +403,7 @@ function BrashPhone(){
 
      let num_measure = Object.keys(heartRate).length;
      if (frameCount == change){
-      modulator.amp(0.05);
+      modulator.amp(0.02);
       changeScene();
       }
     }
@@ -879,7 +879,7 @@ this.draw = function() {
   //Switch scene
   //let num_measure = Object.keys(heartRate).length;
   if (frameCount == change){
-    mod.amp(0.05);
+    mod.amp(0.02);
     changeScene();
   }
   H3 += 1;
@@ -1205,7 +1205,7 @@ function HeartGrid(){
 
   let num_measure = Object.keys(heartRate).length;
   if (frameCount == change){
-      mod.amp(0.05);
+      mod.amp(0.02);
       changeScene();
     }
   }
@@ -1475,7 +1475,7 @@ function AndroidDream(){
       night_index = 0;
       new_night = true;
       night_data_index = 0;
-      osc.amp(0.05);
+      osc.amp(0.02);
       changeScene();
       }
     }
