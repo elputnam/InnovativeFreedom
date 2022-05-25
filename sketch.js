@@ -279,6 +279,7 @@ function BrashPhone(){
   // let list1 = [];
   let bpm;
   let day;
+  let change;
   // Oscillate variables
   let spot;
   let vel;
@@ -337,6 +338,7 @@ function BrashPhone(){
       day = floor(random(1,131));
       heartRate = loadJSON(list1[day]);
       B = 0;
+      change = int(random(1000,5000));
     }
     if (frameCount < 200){
       background(random(150,250), 50, 100, 10);
@@ -400,8 +402,8 @@ function BrashPhone(){
      }
 
      let num_measure = Object.keys(heartRate).length;
-     if (frameCount == 5000){
-      osc.amp(0.05);
+     if (frameCount == change){
+      modulator.amp(0.05);
       changeScene();
       }
     }
@@ -782,6 +784,7 @@ function GlibDrive(){
   var num;
   let spot;
   let day;
+  let change;
 
   //sound
   let carrier;
@@ -828,6 +831,7 @@ this.draw = function() {
     day = int(random(1,131));
     heartRate = loadJSON(list1[day]);
     B = 0;
+    change = int(random(1000,5000));
   }
 
   background(random(30), 10);
@@ -874,7 +878,7 @@ this.draw = function() {
   
   //Switch scene
   //let num_measure = Object.keys(heartRate).length;
-  if (frameCount == 5000){
+  if (frameCount == change){
     mod.amp(0.05);
     changeScene();
   }
@@ -1077,6 +1081,7 @@ function HeartGrid(){
   let s = 0;
   let b;
   let day;
+  let change;
 
   //pixel grid variable
   let tileCount;
@@ -1118,6 +1123,7 @@ function HeartGrid(){
       day = int(random(1,131));
       heartRate = loadJSON(list1[day]);
       B = 0;
+      change = int(random(1000,5000));
     }
 
     if (frameCount <= 100){
@@ -1197,10 +1203,9 @@ function HeartGrid(){
     }
 
   let num_measure = Object.keys(heartRate).length;
-  if (frameCount ==5000){
-      mod.amp(0.01);
+  if (frameCount == change){
+      mod.amp(0.05);
       changeScene();
-
     }
   }
 
