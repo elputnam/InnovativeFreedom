@@ -284,6 +284,7 @@ function BrashPhone(){
   let vel;
   let colA;
   let colB;
+  
 
   //sound
   let osc;
@@ -313,8 +314,8 @@ function BrashPhone(){
   
 
     //select day 
-    day = floor(random(1,131));
-    heartRate = loadJSON(list1[day]);
+    // day = floor(random(1,131));
+    // heartRate = loadJSON(list1[day]);
 
     //set up sound
     osc = new p5.TriOsc(); // set frequency and type
@@ -333,7 +334,9 @@ function BrashPhone(){
   this.draw = function(){
     if (frameCount == 1){
       frameRate(20);
-      osc.amp(amp);
+      day = floor(random(1,131));
+      heartRate = loadJSON(list1[day]);
+      B = 0;
     }
     if (frameCount < 200){
       background(random(150,250), 50, 100, 10);
@@ -397,10 +400,9 @@ function BrashPhone(){
      }
 
      let num_measure = Object.keys(heartRate).length;
-     if (frameCount == num_measure){
+     if (frameCount == 5000){
       osc.amp(0.05);
       changeScene();
-      
       }
     }
 
@@ -589,6 +591,7 @@ function FerociousPatience(){
     let a = 0;
 
     // Daily Cycle - variables for selceting and cycling throguh days
+    let month;
     let lightActive = [];
     let  moderateActive = [];
     let veryActive = []; 
@@ -615,17 +618,23 @@ function FerociousPatience(){
       locy = height/2;
 
       //select month
-      let month = int(random(18));
-      print(month);
-      lightActive = loadJSON(lightList[month]);
-      moderateActive = loadJSON(moderateList[month]);
-      veryActive = loadJSON(veryList[month]);
-      notActive = loadJSON(sedentaryList[month]);
+      // month = int(random(18));
+      // print(month);
+      // lightActive = loadJSON(lightList[month]);
+      // moderateActive = loadJSON(moderateList[month]);
+      // veryActive = loadJSON(veryList[month]);
+      // notActive = loadJSON(sedentaryList[month]);
     }
 
     this.draw = function(){
       if (frameCount == 1){
         frameRate(15);
+        month = int(random(18));
+        print(month);
+        lightActive = loadJSON(lightList[month]);
+        moderateActive = loadJSON(moderateList[month]);
+        veryActive = loadJSON(veryList[month]);
+        notActive = loadJSON(sedentaryList[month]);
       }
 
       //loading screen
@@ -772,6 +781,7 @@ function GlibDrive(){
   let swarm = [];
   var num;
   let spot;
+  let day;
 
   //sound
   let carrier;
@@ -786,8 +796,8 @@ this.setup = function() {
   j = 0;
   //console.log(list1);
   //call random file name (not working)
-  let day = int(random(1,131));
-  heartRate = loadJSON(list1[day]);
+  // day = int(random(1,131));
+  // heartRate = loadJSON(list1[day]);
   //heartRate = loadJSON(list1[10]);
   console.log(list1[day]);
   //console.log(list1[10]);
@@ -813,7 +823,11 @@ this.setup = function() {
 
 this.draw = function() {
   if (frameCount == 1){
+    //reset
     frameRate(15);
+    day = int(random(1,131));
+    heartRate = loadJSON(list1[day]);
+    B = 0;
   }
 
   background(random(30), 10);
@@ -822,6 +836,7 @@ this.draw = function() {
   print(frameCount);
  
   if (frameCount >= 150){
+    //heart rate mapping
     bpm = heartRate[B].value['bpm'];
     colA = map(bpm, 60, 180, 0, 360);
     colB = map(bpm, 60, 180, 360, 0);
@@ -829,9 +844,11 @@ this.draw = function() {
     let modAmp = map(bpm, 60, 180, 0, 1)
     B += 1;
 
+    //sound 
     mod.freq(modFreq);
     mod.amp(modAmp, 0.1);
 
+    //rotating screens
     push();
     let inc = random(-2,2);
     translate(width*.5+inc, height*.5+inc);
@@ -854,9 +871,10 @@ this.draw = function() {
     swarm[i].oscillate();
     swarm[i].display();
     }
-
-  let num_measure = Object.keys(heartRate).length;
-  if (frameCount == num_measure){
+  
+  //Switch scene
+  //let num_measure = Object.keys(heartRate).length;
+  if (frameCount == 5000){
     mod.amp(0.05);
     changeScene();
   }
@@ -866,6 +884,7 @@ this.draw = function() {
   }
 }
 
+//screen design
 this.overlay = function(){
   let w = width - (200);
   let h = height - (200);
@@ -874,6 +893,7 @@ this.overlay = function(){
   }
 }
 
+//rotation
 this.screens = function(){
   //shape 1
   strokeWeight(1);
@@ -895,7 +915,7 @@ this.screens = function(){
 }
 
 
-
+//Swarm
 class Element{
   constructor(){
     this.angle = createVector();
@@ -1056,6 +1076,7 @@ function HeartGrid(){
   let cr = 0; 
   let s = 0;
   let b;
+  let day;
 
   //pixel grid variable
   let tileCount;
@@ -1070,8 +1091,8 @@ function HeartGrid(){
     createCanvas(windowWidth, windowHeight);
     colorMode(HSB, 360, 100, 100, 100);
     background(170, 50, 100);
-    let day = int(random(1,131));
-    heartRate = loadJSON(list1[day]);
+    // day = int(random(1,131));
+    // heartRate = loadJSON(list1[day]);
     x1 = width/2;
     y1 = height/2;
     frameRate(25);
@@ -1094,6 +1115,9 @@ function HeartGrid(){
     if (frameCount == 1){
       frameRate(25);
       //osc.amp(amp);
+      day = int(random(1,131));
+      heartRate = loadJSON(list1[day]);
+      B = 0;
     }
 
     if (frameCount <= 100){
@@ -1116,6 +1140,9 @@ function HeartGrid(){
     let b = map(bpm,60,170,10,255)
     let sw = map(bpm,60,170,3,5)
     B += 1;
+    
+    
+    
   
     //squares
     choice = int(random(1, 4.5));
@@ -1170,9 +1197,10 @@ function HeartGrid(){
     }
 
   let num_measure = Object.keys(heartRate).length;
-  if (frameCount == num_measure){
+  if (frameCount ==5000){
       mod.amp(0.01);
       changeScene();
+
     }
   }
 
@@ -1213,7 +1241,7 @@ function AndroidDream(){
   let x = 0; // start for circle
 
   //Cycling through sleep data
-  let sleep, night_data;
+  let sleep, night_data, night;
   let num_nights; // number of nights of data
   let new_night = true; // starting data for a new night
   let night_index = 0; // index for each night
@@ -1245,9 +1273,9 @@ function AndroidDream(){
     yT = height*.1;
     
     //select month
-    let month = int(random(14));
-    // print(month);
-    sleep = loadJSON(list2[month]);
+    // month = int(random(14));
+    // // print(month);
+    // sleep = loadJSON(list2[month]);
     // console.log(Object.keys(sleep))
     
     // print(month, num_nights);
@@ -1256,7 +1284,7 @@ function AndroidDream(){
 
     //set up sound
     osc = new p5.TriOsc(); // set frequency and type
-    osc.amp(amp);
+    osc.amp(0);
     osc.start();
   }
 
@@ -1267,6 +1295,9 @@ function AndroidDream(){
       frameRate(8);
       j = 0;
       yT = height*.1;
+      month = int(random(14));
+      // print(month);
+      sleep = loadJSON(list2[month]);
     }
     //set up to read through data
     if (frameCount == 100){
