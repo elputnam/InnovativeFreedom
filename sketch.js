@@ -319,7 +319,7 @@ function BrashPhone(){
     // heartRate = loadJSON(list1[day]);
 
     //set up sound
-    osc = new p5.TriOsc(); // set frequency and type
+    osc = new p5.SinOsc(); // set frequency and type
     osc.amp(amp);
     osc.start();
     osc.freq(freq);
@@ -338,7 +338,7 @@ function BrashPhone(){
       day = floor(random(1,131));
       heartRate = loadJSON(list1[day]);
       B = 0;
-      change = int(random(1000,5000));
+      change = int(random(1000,3000));
     }
     if (frameCount < 200){
       background(random(150,250), 50, 100, 10);
@@ -831,7 +831,7 @@ this.draw = function() {
     day = int(random(1,131));
     heartRate = loadJSON(list1[day]);
     B = 0;
-    change = int(random(1000,5000));
+    change = int(random(1000,3000));
   }
 
   background(random(30), 10);
@@ -1123,7 +1123,7 @@ function HeartGrid(){
       day = int(random(1,131));
       heartRate = loadJSON(list1[day]);
       B = 0;
-      change = int(random(1000,5000));
+      change = int(random(1000,3000));
     }
 
     if (frameCount <= 100){
