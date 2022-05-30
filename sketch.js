@@ -40,7 +40,7 @@ let myNotions = [];
 let emergeFont
 
 function preload(){
-  emergeFont = loadFont(data/TitilliumWeb-Regular.ttf)
+  emergeFont = loadFont('data/TitilliumWeb-SemiBold.ttf')
   //Load list of json file names heartrate
   list1 = loadStrings('heartList.txt');
   // heartRate = loadJSON('data/heart_rate-2020-05-01.json')
@@ -258,7 +258,8 @@ this.draw = function() {
     textSize(random(10, 100))
     noStroke()
     fill(random(255))
-    textFont(emergeFont)
+    //textFont('Titillium Web');
+    textFont(emergeFont);
     text(phrase[i], random(width), random(height));
     i += 1;
     if (i >= 3){
@@ -1317,7 +1318,8 @@ function AndroidDream(){
       background(10, 10);
       this.circles();
       if (frameCount%15==0 ){
-        textFont(emergeFont)
+        //textFont('Titillium Web');
+        textFont(emergeFont);
         textSize(55);
         noStroke();
         fill(200);
