@@ -1123,12 +1123,8 @@ function HeartGrid(){
       day = int(random(1,131));
       heartRate = loadJSON(list1[day]);
       B = 0;
-<<<<<<< HEAD
-      change = int(random(1000,3000));
-=======
       change = int(random(1000,5000));
       background(170, 50, 100, 10);
->>>>>>> 6347010065e851fb8ff8611ba11979a0024c61d5
     }
 
     if (frameCount <= 100){
