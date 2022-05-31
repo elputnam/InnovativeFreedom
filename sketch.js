@@ -210,7 +210,7 @@ this.setup = function() {
   //pink noise generator
   pinkNoise = new p5.Noise('pink');
   pinkNoise.start();
-  pinkNoise.amp(0.02);
+  pinkNoise.amp(0.05);
 }
 
 this.draw = function() {    
@@ -256,6 +256,7 @@ this.draw = function() {
   this.timeisGlitchy = function(){
     background(random(360), 100, 100, 5);
     textSize(random(10, 100))
+    textAlign(CENTER);
     noStroke()
     fill(random(255))
     //textFont('Titillium Web');
@@ -1326,7 +1327,7 @@ function AndroidDream(){
         textAlign(CENTER);
         text(title[j], xT, yT);
         j += 1;
-        yT += 70;
+        yT += 40;
         }
 
     }
