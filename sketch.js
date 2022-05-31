@@ -653,7 +653,7 @@ function FerociousPatience(){
       if (frameCount==100){
         num_days = Object.keys(lightActive).length;
         background(0);
-        textSize(50);
+        textSize(30);
         fill(255);
         textAlign(LEFT);
         text('lightly active', width*.05, height*0.2);
@@ -682,7 +682,7 @@ function FerociousPatience(){
 
         //Display night
         fill(255);
-        textSize(40);
+        textSize(30);
         noStroke();
         textAlign(RIGHT);
         text(dateTime, width-40, height-40);
@@ -1320,7 +1320,7 @@ function AndroidDream(){
       if (frameCount%15==0 ){
         //textFont('Titillium Web');
         textFont(emergeFont);
-        textSize(55);
+        textSize(35);
         noStroke();
         fill(200);
         textAlign(CENTER);
@@ -1345,7 +1345,7 @@ function AndroidDream(){
     //display poem; after cycles through once starts again at random location
     if (frameCount >= 250){
       if (frameCount%20==0){
-      textSize(45);
+      textSize(40);
       noStroke();
       textAlign(RIGHT);
       xT = random(width*.6, width);
@@ -1461,7 +1461,7 @@ function AndroidDream(){
     //Counter loop
     //display night
     fill(10);
-    textSize(40);
+    textSize(30);
     noStroke();
     textAlign(LEFT);
     text(dateTime, 40, 40);
