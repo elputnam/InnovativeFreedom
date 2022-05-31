@@ -12,4 +12,4 @@ Includes:
 - Tether
 - Heart Grid: heartrate data
 - Indeterminate System
-- Refurbished notions: text to speech
+- Refurbished notions: visuals only
