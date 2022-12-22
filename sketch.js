@@ -162,7 +162,7 @@ function windowResized() {
 //changes between scenes automatically and randomly
 function changeScene(){
   reset();
-  let chance = floor(random(1,10));
+  let chance = floor(random(1,9.99));
   
   if (chance == 1){
   mgr.showScene(BrashPhone);
@@ -184,6 +184,13 @@ function changeScene(){
     mgr.showScene(RefurbishedNotions);
   }
 }
+
+function mousePressed(){
+
+  let fs = fullscreen();
+  fullscreen(!fs);
+}
+
 
 //========================================================================
 //=========================Scenes=========================================
