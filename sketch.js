@@ -697,13 +697,13 @@ function FerociousPatience(){
 
         if (day_num >= num_days){
           day_num = 0;
-          changeScene();
+          // changeScene();
           }
         }
-        // if (frameCount == 500){
-        //   changeScene();
-        //   reset();
-        // }
+        if (frameCount == 500){
+          changeScene();
+          reset();
+        }
     }
 
     this.uncertainFoal = function(){
